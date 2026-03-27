@@ -77,7 +77,10 @@ struct PracticeModeView: View {
                         Spacer()
 
                         // Speed control
-                        Picker("Speed", selection: Bindable(coordinator).playbackRate) {
+                        Picker("Speed", selection: Binding(
+                            get: { coordinator.playbackRate },
+                            set: { coordinator.setRate($0) }
+                        )) {
                             Text("0.5x").tag(Float(0.5))
                             Text("0.75x").tag(Float(0.75))
                             Text("1.0x").tag(Float(1.0))

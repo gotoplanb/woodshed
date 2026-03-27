@@ -53,6 +53,39 @@ Woodshed/Woodshed/
 └── Views/                          # All SwiftUI views
 ```
 
+## Testing
+
+**Workflow:** Simulator → Beta iPhone → TestFlight (Dave's daily carry)
+
+**Test songs on Beta iPhone (Appetite for Destruction):**
+- **Mr. Brownstone** (appleMusicID: `1377813295`) — streaming only, NOT downloaded. Use to test MusicKit playback path and verify speed control is disabled.
+- **My Michelle** (appleMusicID: `1377813302`) — downloaded locally. Use to test AVFoundation playback path and verify speed control works.
+
+**Device commands:**
+```bash
+# Build + deploy to Beta iPhone
+xcodebuild -project Woodshed/Woodshed.xcodeproj -scheme Woodshed \
+  -destination 'id=00008130-000139A00AC2001C' \
+  -allowProvisioningUpdates DEVELOPMENT_TEAM=2Y4J24S4QZ build -quiet
+xcrun devicectl device install app --device 65000D11-CB21-5CC1-9D0F-3C2B85EDA5FE \
+  ~/Library/Developer/Xcode/DerivedData/Woodshed-*/Build/Products/Debug-iphoneos/Woodshed.app
+xcrun devicectl device process launch --device 65000D11-CB21-5CC1-9D0F-3C2B85EDA5FE \
+  com.zeromissionllc.woodshed
+
+# Terminate app
+xcrun devicectl device process terminate --device 65000D11-CB21-5CC1-9D0F-3C2B85EDA5FE \
+  --pid $(xcrun devicectl device info processes --device 65000D11-CB21-5CC1-9D0F-3C2B85EDA5FE 2>&1 \
+  | grep Woodshed | awk '{print $1}')
+
+# Copy file to app container
+xcrun devicectl device copy to --domain-identifier com.zeromissionllc.woodshed \
+  --domain-type appDataContainer --device 65000D11-CB21-5CC1-9D0F-3C2B85EDA5FE \
+  --source <local-path> --destination <container-relative-path>
+
+# Read device logs
+xcrun devicectl device info processes --device 65000D11-CB21-5CC1-9D0F-3C2B85EDA5FE
+```
+
 ## Things to Know
 
 - MusicKit search fails on simulator — use real device for playback testing
