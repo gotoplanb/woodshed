@@ -58,36 +58,20 @@ final class MusicKitService {
         }
     }
 
-    var lookupDebug: String = ""
-
     func lookupSong(byID id: String, title: String? = nil) async -> Song? {
         // Try direct ID lookup first
-        do {
-            let musicItemID = MusicItemID(id)
-            let request = MusicCatalogResourceRequest<Song>(matching: \.id, equalTo: musicItemID)
-            let response = try await request.response()
-            if let song = response.items.first {
-                lookupDebug = "ID lookup OK: \(song.title)"
-                return song
-            }
-            lookupDebug = "ID lookup: no results"
-        } catch {
-            lookupDebug = "ID lookup error: \(error)"
+        let musicItemID = MusicItemID(id)
+        let request = MusicCatalogResourceRequest<Song>(matching: \.id, equalTo: musicItemID)
+        if let song = try? await request.response().items.first {
+            return song
         }
 
-        // Fall back to search by title
+        // Fall back to search by title (web storefront IDs don't match MusicKit catalog IDs)
         guard let title else { return nil }
-        do {
-            var searchRequest = MusicCatalogSearchRequest(term: title, types: [Song.self])
-            searchRequest.limit = 5
-            let response = try await searchRequest.response()
-            if let song = response.songs.first {
-                lookupDebug += " | Search OK: \(song.title)"
-                return song
-            }
-            lookupDebug += " | Search: no results for '\(title)'"
-        } catch {
-            lookupDebug += " | Search error: \(error)"
+        var searchRequest = MusicCatalogSearchRequest(term: title, types: [Song.self])
+        searchRequest.limit = 5
+        if let results = try? await searchRequest.response() {
+            return results.songs.first
         }
         return nil
     }
@@ -138,17 +122,12 @@ final class MusicKitService {
         stopPositionMonitoring()
     }
 
-    var playerStateDebug: String = ""
-
     private func startPositionMonitoring() {
         stopPositionMonitoring()
         positionTimer = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: true) { [weak self] _ in
             guard let self else { return }
             Task { @MainActor in
-                let shared = ApplicationMusicPlayer.shared
-                self.currentPlaybackTime = shared.playbackTime
-                let state = shared.state.playbackStatus
-                self.playerStateDebug = "state=\(state) time=\(shared.playbackTime)"
+                self.currentPlaybackTime = ApplicationMusicPlayer.shared.playbackTime
             }
         }
     }

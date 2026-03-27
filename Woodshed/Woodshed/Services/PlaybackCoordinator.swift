@@ -24,7 +24,6 @@ final class PlaybackCoordinator {
     var isSessionActive: Bool = false
     var countdownSeconds: Int = 0
     var playbackError: String?
-    var debugStatus: String = ""
 
     private let musicService: MusicKitService
     private var monitorTimer: Timer?
@@ -99,24 +98,13 @@ final class PlaybackCoordinator {
         }
 
         // Fall back to MusicKit streaming
-        let authDesc: String
-        switch musicService.authorizationStatus {
-        case .authorized: authDesc = "authorized"
-        case .denied: authDesc = "denied"
-        case .notDetermined: authDesc = "notDetermined"
-        case .restricted: authDesc = "restricted"
-        @unknown default: authDesc = "unknown"
-        }
-        debugStatus = "Auth: \(authDesc), looking up: \(section.songTitle)"
         let song = await musicService.lookupSong(byID: section.appleMusicID, title: section.songTitle)
         guard let song else {
-            debugStatus = musicService.lookupDebug
-            playbackError = "Song not found: \(musicService.lookupDebug)"
+            playbackError = "Song not found in Apple Music"
             isPlaying = false
             return
         }
 
-        debugStatus = "Found: \(song.title) — calling play()"
         currentEngine = .musicKit(song)
         rateControlAvailable = false
 
@@ -126,10 +114,8 @@ final class PlaybackCoordinator {
 
         await musicService.play(song: song, startTime: section.startTime)
         if let error = musicService.lastError {
-            debugStatus = "Play error: \(error)"
             playbackError = error
         } else {
-            debugStatus = "Playing via MusicKit"
             isPlaying = true
             playbackError = nil
             startMonitoring()
@@ -295,7 +281,6 @@ final class PlaybackCoordinator {
             currentPlaybackTime = player.currentTime
         case .musicKit:
             currentPlaybackTime = musicService.currentPlaybackTime
-            debugStatus = musicService.playerStateDebug
         case nil:
             break
         }
