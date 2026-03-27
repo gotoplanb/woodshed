@@ -23,6 +23,8 @@ final class PlaybackCoordinator {
     var sections: [Section] = []
     var isSessionActive: Bool = false
     var countdownSeconds: Int = 0
+    var playbackError: String?
+    var debugStatus: String = ""
 
     private let musicService: MusicKitService
     private var monitorTimer: Timer?
@@ -97,13 +99,23 @@ final class PlaybackCoordinator {
         }
 
         // Fall back to MusicKit streaming
-        let song = await musicService.lookupSong(byID: section.appleMusicID)
+        let authDesc: String
+        switch musicService.authorizationStatus {
+        case .authorized: authDesc = "authorized"
+        case .denied: authDesc = "denied"
+        case .notDetermined: authDesc = "notDetermined"
+        case .restricted: authDesc = "restricted"
+        @unknown default: authDesc = "unknown"
+        }
+        debugStatus = "Auth: \(authDesc), looking up: \(section.songTitle)"
+        let song = await musicService.lookupSong(byID: section.appleMusicID, title: section.songTitle)
         guard let song else {
-            print("Could not find song for appleMusicID: \(section.appleMusicID)")
+            debugStatus = musicService.lookupDebug
+            playbackError = "Song not found: \(musicService.lookupDebug)"
             return
         }
 
-        print("PlaybackCoordinator: Using MusicKit (streaming)")
+        debugStatus = "Found: \(song.title) — calling play()"
         currentEngine = .musicKit(song)
         rateControlAvailable = false
 
@@ -112,8 +124,15 @@ final class PlaybackCoordinator {
         }
 
         await musicService.play(song: song, startTime: section.startTime)
-        isPlaying = true
-        startMonitoring()
+        if let error = musicService.lastError {
+            debugStatus = "Play error: \(error)"
+            playbackError = error
+        } else {
+            debugStatus = "Playing via MusicKit"
+            isPlaying = true
+            playbackError = nil
+            startMonitoring()
+        }
     }
 
     private func runCountdown() async {

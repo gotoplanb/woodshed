@@ -84,8 +84,21 @@ final class PlaybackFlowTests: XCTestCase {
         }
 
         playAll.tap()
+        sleep(3)
+        screenshot("PracticeMode-3s")
+
+        // Read playback state from screen
+        for text in app.staticTexts.allElementsBoundByIndex.prefix(15) {
+            print("TEST-PM: '\(text.label)'")
+        }
+
         sleep(5)
-        screenshot("PracticeMode")
+        screenshot("PracticeMode-8s")
+
+        // Check state again after more time
+        for text in app.staticTexts.allElementsBoundByIndex.prefix(15) {
+            print("TEST-PM-8s: '\(text.label)'")
+        }
 
         let doneButton = app.buttons["Done"]
         if doneButton.waitForExistence(timeout: 5) {

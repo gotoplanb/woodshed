@@ -88,6 +88,7 @@ xcrun devicectl device info processes --device 65000D11-CB21-5CC1-9D0F-3C2B85EDA
 
 ## Things to Know
 
+- **MusicKit requires App ID registration**: Go to https://developer.apple.com/account/resources/identifiers/ → find the App ID → under App Services, enable **MusicKit**. Without this, all MusicKit catalog requests fail with `.unknown` error. This is NOT an Xcode Signing & Capabilities thing — it's a portal-only setting.
 - MusicKit search fails on simulator — use real device for playback testing
 - `PRODUCT_NAME` in pbxproj must be `$(TARGET_NAME)`, not empty
 - `UILaunchScreen` dict must exist in Info.plist

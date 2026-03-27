@@ -58,11 +58,41 @@ final class MusicKitService {
         }
     }
 
-    func lookupSong(byID id: String) async -> Song? {
-        let musicItemID = MusicItemID(id)
-        let request = MusicCatalogResourceRequest<Song>(matching: \.id, equalTo: musicItemID)
-        return try? await request.response().items.first
+    var lookupDebug: String = ""
+
+    func lookupSong(byID id: String, title: String? = nil) async -> Song? {
+        // Try direct ID lookup first
+        do {
+            let musicItemID = MusicItemID(id)
+            let request = MusicCatalogResourceRequest<Song>(matching: \.id, equalTo: musicItemID)
+            let response = try await request.response()
+            if let song = response.items.first {
+                lookupDebug = "ID lookup OK: \(song.title)"
+                return song
+            }
+            lookupDebug = "ID lookup: no results"
+        } catch {
+            lookupDebug = "ID lookup error: \(error)"
+        }
+
+        // Fall back to search by title
+        guard let title else { return nil }
+        do {
+            var searchRequest = MusicCatalogSearchRequest(term: title, types: [Song.self])
+            searchRequest.limit = 5
+            let response = try await searchRequest.response()
+            if let song = response.songs.first {
+                lookupDebug += " | Search OK: \(song.title)"
+                return song
+            }
+            lookupDebug += " | Search: no results for '\(title)'"
+        } catch {
+            lookupDebug += " | Search error: \(error)"
+        }
+        return nil
     }
+
+    var lastError: String?
 
     func play(song: Song, startTime: TimeInterval = 0) async {
         do {
@@ -71,9 +101,14 @@ final class MusicKitService {
             player.playbackTime = startTime
             await MainActor.run {
                 isPlaying = true
+                lastError = nil
                 startPositionMonitoring()
             }
         } catch {
+            await MainActor.run {
+                lastError = error.localizedDescription
+                isPlaying = false
+            }
             print("Playback error: \(error)")
         }
     }
