@@ -1,11 +1,11 @@
 {
   "createdAt" : "2026-03-27T21:00:00Z",
-  "id" : "DEADBEEF-TEST-0001-ABCD-000000000001",
+  "id" : "DE00BEEF-0E57-4001-ABCD-000000000001",
   "sections" : [
     {
       "appleMusicID" : "1377813295",
       "endTime" : 30,
-      "id" : "TEST0001-0001-0001-0001-000000000001",
+      "id" : "AE570001-0001-4001-A001-000000000001",
       "instrument" : "Guitar",
       "notes" : "STREAMING TEST — Mr. Brownstone is not downloaded, should use MusicKit path. Speed control should be DISABLED.",
       "role" : "Rhythm",
@@ -16,7 +16,7 @@
     {
       "appleMusicID" : "1377813302",
       "endTime" : 30,
-      "id" : "TEST0001-0001-0001-0001-000000000002",
+      "id" : "AE570001-0001-4001-A001-000000000002",
       "instrument" : "Guitar",
       "notes" : "LOCAL TEST — My Michelle is downloaded, should use AVFoundation path once MPMediaLibrary bug is fixed. Speed control should be ENABLED.",
       "role" : "Rhythm",
@@ -25,6 +25,6 @@
       "title" : "Intro (Local)"
     }
   ],
-  "title" : "Test Playback",
+  "title" : "Playback Test",
   "updatedAt" : "2026-03-27T21:00:00Z"
 }

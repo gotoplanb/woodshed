@@ -191,15 +191,12 @@ final class StorageService {
     // MARK: - Seed Data
 
     private func seedIfEmpty() {
-        let url = setlistsURL
-        let hasFiles = (try? FileManager.default.contentsOfDirectory(at: url, includingPropertiesForKeys: nil))?.contains { $0.pathExtension == "json" } ?? false
-        guard !hasFiles else { return }
+        for name in ["appetite-for-destruction", "playback-test"] {
+            let destURL = setlistsURL.appendingPathComponent("\(name).json")
+            guard !FileManager.default.fileExists(atPath: destURL.path) else { continue }
 
-        // Copy bundled seed setlists into storage
-        for name in ["appetite-for-destruction", "test-playback"] {
             if let seedURL = Bundle.main.url(forResource: name, withExtension: "json"),
                let data = try? Data(contentsOf: seedURL) {
-                let destURL = setlistsURL.appendingPathComponent("\(name).json")
                 coordinatedWrite(data: data, to: destURL)
             }
         }
