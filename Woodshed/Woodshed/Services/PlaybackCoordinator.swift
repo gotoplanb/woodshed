@@ -43,7 +43,6 @@ final class PlaybackCoordinator {
 
     init(musicService: MusicKitService) {
         self.musicService = musicService
-        configureAudioSession()
     }
 
     private func configureAudioSession() {
@@ -64,13 +63,22 @@ final class PlaybackCoordinator {
     }
 
     func playCurrentSection() async {
-        guard let section = currentSection else { return }
+        guard let section = currentSection else {
+            print("PlaybackCoordinator: No current section at index \(currentSectionIndex)")
+            return
+        }
+
+        print("PlaybackCoordinator: Playing section '\(section.title)' of '\(section.songTitle)' (ID: \(section.appleMusicID))")
+
+        configureAudioSession()
 
         // Stop any current playback
         stopCurrentPlayback()
 
-        // Try to find a local copy first
-        if let player = findLocalTrack(appleMusicID: section.appleMusicID) {
+        // TODO: Re-enable once MPMediaQuery crash is resolved
+        // Local track detection disabled — MPMediaLibrary crashes on iOS 26.4
+        if false, let player = findLocalTrack(appleMusicID: section.appleMusicID) {
+            print("PlaybackCoordinator: Using AVFoundation (local track)")
             currentEngine = .avFoundation(player)
             avPlayer = player
             rateControlAvailable = true
@@ -95,6 +103,7 @@ final class PlaybackCoordinator {
             return
         }
 
+        print("PlaybackCoordinator: Using MusicKit (streaming)")
         currentEngine = .musicKit(song)
         rateControlAvailable = false
 
@@ -203,6 +212,16 @@ final class PlaybackCoordinator {
     // MARK: - Local Track Detection
 
     private func findLocalTrack(appleMusicID: String) -> AVAudioPlayer? {
+        // Check media library authorization first
+        let authStatus = MPMediaLibrary.authorizationStatus()
+        print("PlaybackCoordinator: Media library auth status: \(authStatus.rawValue)")
+        guard authStatus == .authorized else {
+            print("PlaybackCoordinator: Media library not authorized, skipping local track lookup")
+            return nil
+        }
+
+        print("PlaybackCoordinator: Searching local library for ID \(appleMusicID)")
+
         // Query the local media library for a track matching this Apple Music ID
         // MPMediaItemPropertyPlaybackStoreID matches the Apple Music catalog ID
         let predicate = MPMediaPropertyPredicate(
@@ -213,17 +232,24 @@ final class PlaybackCoordinator {
         let query = MPMediaQuery()
         query.addFilterPredicate(predicate)
 
-        guard let item = query.items?.first,
-              let assetURL = item.assetURL else {
+        guard let item = query.items?.first else {
+            print("PlaybackCoordinator: No local item found")
             return nil
         }
+
+        guard let assetURL = item.assetURL else {
+            print("PlaybackCoordinator: Item found but no assetURL (DRM protected or cloud-only)")
+            return nil
+        }
+
+        print("PlaybackCoordinator: Found local track at \(assetURL)")
 
         do {
             let player = try AVAudioPlayer(contentsOf: assetURL)
             player.prepareToPlay()
             return player
         } catch {
-            print("Failed to create AVAudioPlayer: \(error)")
+            print("PlaybackCoordinator: Failed to create AVAudioPlayer: \(error)")
             return nil
         }
     }

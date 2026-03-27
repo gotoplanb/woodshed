@@ -3,6 +3,9 @@ import SwiftUI
 struct SetlistDetailView: View {
     @Environment(StorageService.self) private var storage
     let setlistID: UUID
+    @State private var practiceStartIndex: Int?
+    @State private var practiceLoopDefault = false
+    @State private var showPracticeMode = false
 
     private var setlist: Setlist? {
         storage.setlists.first { $0.id == setlistID }
@@ -14,6 +17,11 @@ struct SetlistDetailView: View {
                 content(setlist)
             } else {
                 ContentUnavailableView("Setlist Not Found", systemImage: "exclamationmark.triangle")
+            }
+        }
+        .navigationDestination(isPresented: $showPracticeMode) {
+            if let startIndex = practiceStartIndex {
+                PracticeModeView(setlistID: setlistID, startIndex: startIndex, loopDefault: practiceLoopDefault)
             }
         }
     }
@@ -30,7 +38,11 @@ struct SetlistDetailView: View {
                     }
                 }
                 .swipeActions(edge: .leading) {
-                    NavigationLink(destination: PracticeModeView(setlistID: setlistID, startIndex: index, loopDefault: true)) {
+                    Button {
+                        practiceStartIndex = index
+                        practiceLoopDefault = true
+                        showPracticeMode = true
+                    } label: {
                         Label("Play", systemImage: "play.fill")
                     }
                     .tint(.green)
@@ -50,7 +62,11 @@ struct SetlistDetailView: View {
             }
             ToolbarItem(placement: .bottomBar) {
                 if !setlist.sections.isEmpty {
-                    NavigationLink(destination: PracticeModeView(setlistID: setlistID, startIndex: 0, loopDefault: false)) {
+                    Button {
+                        practiceStartIndex = 0
+                        practiceLoopDefault = false
+                        showPracticeMode = true
+                    } label: {
                         Label("Play All", systemImage: "play.fill")
                     }
                 }

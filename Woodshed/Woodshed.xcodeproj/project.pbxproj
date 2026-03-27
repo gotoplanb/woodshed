@@ -28,6 +28,7 @@
 		A10012000000000000000012 /* MusicKitServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10012000000000000000012 /* MusicKitServiceTests.swift */; };
 		A10013000000000000000013 /* PlaybackCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10013000000000000000013 /* PlaybackCoordinatorTests.swift */; };
 		A10014000000000000000014 /* WoodshedUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10014000000000000000014 /* WoodshedUITests.swift */; };
+		A10018000000000000000018 /* PlaybackFlowTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10018000000000000000018 /* PlaybackFlowTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -68,6 +69,7 @@
 		B10012000000000000000012 /* MusicKitServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicKitServiceTests.swift; sourceTree = "<group>"; };
 		B10013000000000000000013 /* PlaybackCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackCoordinatorTests.swift; sourceTree = "<group>"; };
 		B10014000000000000000014 /* WoodshedUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WoodshedUITests.swift; sourceTree = "<group>"; };
+		B10018000000000000000018 /* PlaybackFlowTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackFlowTests.swift; sourceTree = "<group>"; };
 		B10015000000000000000015 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B10016000000000000000016 /* Woodshed.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Woodshed.entitlements; sourceTree = "<group>"; };
 		B10017000000000000000017 /* appetite-for-destruction.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "appetite-for-destruction.json"; sourceTree = "<group>"; };
@@ -199,6 +201,7 @@
 			isa = PBXGroup;
 			children = (
 				B10014000000000000000014 /* WoodshedUITests.swift */,
+				B10018000000000000000018 /* PlaybackFlowTests.swift */,
 			);
 			path = WoodshedUITests;
 			sourceTree = "<group>";
@@ -344,6 +347,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A10014000000000000000014 /* WoodshedUITests.swift in Sources */,
+				A10018000000000000000018 /* PlaybackFlowTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
