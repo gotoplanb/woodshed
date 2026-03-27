@@ -138,12 +138,17 @@ final class MusicKitService {
         stopPositionMonitoring()
     }
 
+    var playerStateDebug: String = ""
+
     private func startPositionMonitoring() {
         stopPositionMonitoring()
         positionTimer = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: true) { [weak self] _ in
             guard let self else { return }
             Task { @MainActor in
-                self.currentPlaybackTime = self.player.playbackTime
+                let shared = ApplicationMusicPlayer.shared
+                self.currentPlaybackTime = shared.playbackTime
+                let state = shared.state.playbackStatus
+                self.playerStateDebug = "state=\(state) time=\(shared.playbackTime)"
             }
         }
     }

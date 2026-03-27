@@ -85,20 +85,13 @@ final class PlaybackFlowTests: XCTestCase {
 
         playAll.tap()
         sleep(3)
-        screenshot("PracticeMode-3s")
-
-        // Read playback state from screen
-        for text in app.staticTexts.allElementsBoundByIndex.prefix(15) {
-            print("TEST-PM: '\(text.label)'")
-        }
-
+        printState("3s")
         sleep(5)
-        screenshot("PracticeMode-8s")
-
-        // Check state again after more time
-        for text in app.staticTexts.allElementsBoundByIndex.prefix(15) {
-            print("TEST-PM-8s: '\(text.label)'")
-        }
+        printState("8s")
+        sleep(7)
+        printState("15s")
+        sleep(10)
+        printState("25s")
 
         let doneButton = app.buttons["Done"]
         if doneButton.waitForExistence(timeout: 5) {
@@ -109,6 +102,15 @@ final class PlaybackFlowTests: XCTestCase {
             screenshot("FAIL-NoDone")
             XCTFail("Done button not found")
         }
+    }
+
+    private func printState(_ label: String) {
+        var texts: [String] = []
+        for text in app.staticTexts.allElementsBoundByIndex.prefix(12) {
+            texts.append(text.label)
+        }
+        print("TEST-\(label): \(texts)")
+        screenshot(label)
     }
 
     private func screenshot(_ name: String) {

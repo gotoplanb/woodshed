@@ -277,11 +277,13 @@ final class PlaybackCoordinator {
 
     private func startMonitoring() {
         stopMonitoring()
-        monitorTimer = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: true) { [weak self] _ in
-            guard let self else { return }
-            Task { @MainActor in
-                self.updatePlaybackTime()
-                await self.checkEndTime()
+        DispatchQueue.main.async { [weak self] in
+            self?.monitorTimer = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: true) { [weak self] _ in
+                guard let self else { return }
+                Task { @MainActor in
+                    self.updatePlaybackTime()
+                    await self.checkEndTime()
+                }
             }
         }
     }
@@ -292,6 +294,7 @@ final class PlaybackCoordinator {
             currentPlaybackTime = player.currentTime
         case .musicKit:
             currentPlaybackTime = musicService.currentPlaybackTime
+            debugStatus = musicService.playerStateDebug
         case nil:
             break
         }
