@@ -85,10 +85,6 @@ struct PracticeModeView: View {
                 Text(section.title)
                     .foregroundStyle(.secondary)
 
-                // Playback status
-                Text(coordinator.isPlaying ? "Playing" : "Paused")
-                    .font(.caption)
-                    .foregroundStyle(coordinator.isPlaying ? .green : .orange)
                 Text(Section.formatTime(coordinator.currentPlaybackTime))
                     .font(.caption.monospaced())
                     .foregroundStyle(.secondary)
@@ -97,14 +93,6 @@ struct PracticeModeView: View {
                     Text(error)
                         .font(.caption)
                         .foregroundStyle(.red)
-                        .multilineTextAlignment(.center)
-                        .padding(.horizontal)
-                }
-
-                if !coordinator.debugStatus.isEmpty {
-                    Text(coordinator.debugStatus)
-                        .font(.caption2)
-                        .foregroundStyle(.secondary)
                         .multilineTextAlignment(.center)
                         .padding(.horizontal)
                 }

@@ -84,14 +84,14 @@ final class PlaybackFlowTests: XCTestCase {
         }
 
         playAll.tap()
-        sleep(3)
-        printState("3s")
         sleep(5)
-        printState("8s")
-        sleep(7)
-        printState("15s")
+        printState("5s")
         sleep(10)
-        printState("25s")
+        printState("15s")
+        sleep(15)
+        printState("30s-should-advance")
+        sleep(5)
+        printState("35s-should-be-michelle")
 
         let doneButton = app.buttons["Done"]
         if doneButton.waitForExistence(timeout: 5) {

@@ -112,6 +112,7 @@ final class PlaybackCoordinator {
         guard let song else {
             debugStatus = musicService.lookupDebug
             playbackError = "Song not found: \(musicService.lookupDebug)"
+            isPlaying = false
             return
         }
 
@@ -306,8 +307,11 @@ final class PlaybackCoordinator {
     }
 
     private func checkEndTime() async {
+        guard isPlaying else { return }
         guard let section = currentSection, let endTime = section.endTime else { return }
         guard currentPlaybackTime >= endTime else { return }
+        // Only advance if we've been playing this section (not stale time from previous section)
+        guard currentPlaybackTime >= section.startTime else { return }
 
         if isLooping {
             seekToStart(section)
