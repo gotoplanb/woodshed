@@ -196,10 +196,12 @@ final class StorageService {
         guard !hasFiles else { return }
 
         // Copy bundled seed setlists into storage
-        if let seedURL = Bundle.main.url(forResource: "appetite-for-destruction", withExtension: "json"),
-           let data = try? Data(contentsOf: seedURL) {
-            let destURL = setlistsURL.appendingPathComponent("appetite-for-destruction.json")
-            coordinatedWrite(data: data, to: destURL)
+        for name in ["appetite-for-destruction", "test-playback"] {
+            if let seedURL = Bundle.main.url(forResource: name, withExtension: "json"),
+               let data = try? Data(contentsOf: seedURL) {
+                let destURL = setlistsURL.appendingPathComponent("\(name).json")
+                coordinatedWrite(data: data, to: destURL)
+            }
         }
     }
 

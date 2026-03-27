@@ -23,6 +23,7 @@
 		A1000E00000000000000000E /* TabImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000E00000000000000000E /* TabImageView.swift */; };
 		A1000F00000000000000000F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B1000F00000000000000000F /* Assets.xcassets */; };
 		A10017000000000000000017 /* appetite-for-destruction.json in Resources */ = {isa = PBXBuildFile; fileRef = B10017000000000000000017 /* appetite-for-destruction.json */; };
+		A10019000000000000000019 /* test-playback.json in Resources */ = {isa = PBXBuildFile; fileRef = B10019000000000000000019 /* test-playback.json */; };
 		A10010000000000000000010 /* ModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10010000000000000000010 /* ModelTests.swift */; };
 		A10011000000000000000011 /* StorageServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10011000000000000000011 /* StorageServiceTests.swift */; };
 		A10012000000000000000012 /* MusicKitServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10012000000000000000012 /* MusicKitServiceTests.swift */; };
@@ -73,6 +74,7 @@
 		B10015000000000000000015 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B10016000000000000000016 /* Woodshed.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Woodshed.entitlements; sourceTree = "<group>"; };
 		B10017000000000000000017 /* appetite-for-destruction.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "appetite-for-destruction.json"; sourceTree = "<group>"; };
+		B10019000000000000000019 /* test-playback.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "test-playback.json"; sourceTree = "<group>"; };
 		F10001000000000000000001 /* Woodshed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Woodshed.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F10002000000000000000002 /* WoodshedTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WoodshedTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F10003000000000000000003 /* WoodshedUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WoodshedUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -182,6 +184,7 @@
 			isa = PBXGroup;
 			children = (
 				B10017000000000000000017 /* appetite-for-destruction.json */,
+				B10019000000000000000019 /* test-playback.json */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -304,6 +307,7 @@
 			files = (
 				A1000F00000000000000000F /* Assets.xcassets in Resources */,
 				A10017000000000000000017 /* appetite-for-destruction.json in Resources */,
+				A10019000000000000000019 /* test-playback.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
