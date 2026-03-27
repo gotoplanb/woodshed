@@ -85,13 +85,11 @@ final class PlaybackFlowTests: XCTestCase {
 
         playAll.tap()
         sleep(5)
-        printState("5s")
+        printState("5s-brownstone")
+        sleep(25)
+        printState("30s-should-advance-to-michelle")
         sleep(10)
-        printState("15s")
-        sleep(15)
-        printState("30s-should-advance")
-        sleep(5)
-        printState("35s-should-be-michelle")
+        printState("40s-michelle-playing")
 
         let doneButton = app.buttons["Done"]
         if doneButton.waitForExistence(timeout: 5) {
@@ -101,6 +99,51 @@ final class PlaybackFlowTests: XCTestCase {
         } else {
             screenshot("FAIL-NoDone")
             XCTFail("Done button not found")
+        }
+    }
+
+    func testLoopMode() throws {
+        // Navigate to Playback Test setlist
+        let setlistCell = app.staticTexts["Playback Test"]
+        guard setlistCell.waitForExistence(timeout: 5) else {
+            XCTFail("Playback Test not found")
+            return
+        }
+        setlistCell.tap()
+        sleep(1)
+
+        // Swipe right on Intro (Streaming) to get Play From Here (loop=ON)
+        let introCell = app.staticTexts["Intro (Streaming)"]
+        guard introCell.waitForExistence(timeout: 3) else {
+            XCTFail("Intro (Streaming) not found")
+            return
+        }
+        introCell.swipeRight()
+        sleep(1)
+
+        let playButton = app.buttons["Play"]
+        guard playButton.waitForExistence(timeout: 2) else {
+            // Swipe action might not show as a button — try tapping the green area
+            screenshot("FAIL-NoSwipePlay")
+            XCTFail("Play swipe action not found")
+            return
+        }
+        playButton.tap()
+        sleep(3)
+        printState("loop-3s")
+
+        // Wait past the 30s endTime boundary
+        sleep(28)
+        printState("loop-31s-should-loop-back")
+
+        // If looping, it should still be on Mr. Brownstone with time reset near 0
+        sleep(5)
+        printState("loop-36s-should-still-be-brownstone")
+
+        // Clean up
+        let doneButton = app.buttons["Done"]
+        if doneButton.waitForExistence(timeout: 3) {
+            doneButton.tap()
         }
     }
 
