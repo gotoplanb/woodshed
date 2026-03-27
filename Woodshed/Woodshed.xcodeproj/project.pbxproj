@@ -1,0 +1,550 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A10001000000000000000001 /* WoodshedApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10001000000000000000001 /* WoodshedApp.swift */; };
+		A10002000000000000000002 /* Setlist.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10002000000000000000002 /* Setlist.swift */; };
+		A10003000000000000000003 /* Section.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10003000000000000000003 /* Section.swift */; };
+		A10004000000000000000004 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10004000000000000000004 /* AppSettings.swift */; };
+		A10005000000000000000005 /* StorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10005000000000000000005 /* StorageService.swift */; };
+		A10006000000000000000006 /* MusicKitService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10006000000000000000006 /* MusicKitService.swift */; };
+		A10007000000000000000007 /* PlaybackCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10007000000000000000007 /* PlaybackCoordinator.swift */; };
+		A10008000000000000000008 /* SetlistLibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10008000000000000000008 /* SetlistLibraryView.swift */; };
+		A10009000000000000000009 /* SetlistDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10009000000000000000009 /* SetlistDetailView.swift */; };
+		A1000A00000000000000000A /* PracticeModeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000A00000000000000000A /* PracticeModeView.swift */; };
+		A1000B00000000000000000B /* SectionEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000B00000000000000000B /* SectionEditorView.swift */; };
+		A1000C00000000000000000C /* SongBrowserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000C00000000000000000C /* SongBrowserView.swift */; };
+		A1000D00000000000000000D /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000D00000000000000000D /* SettingsView.swift */; };
+		A1000E00000000000000000E /* TabImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000E00000000000000000E /* TabImageView.swift */; };
+		A1000F00000000000000000F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B1000F00000000000000000F /* Assets.xcassets */; };
+		A10017000000000000000017 /* appetite-for-destruction.json in Resources */ = {isa = PBXBuildFile; fileRef = B10017000000000000000017 /* appetite-for-destruction.json */; };
+		A10010000000000000000010 /* ModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10010000000000000000010 /* ModelTests.swift */; };
+		A10011000000000000000011 /* StorageServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10011000000000000000011 /* StorageServiceTests.swift */; };
+		A10012000000000000000012 /* MusicKitServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10012000000000000000012 /* MusicKitServiceTests.swift */; };
+		A10013000000000000000013 /* PlaybackCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10013000000000000000013 /* PlaybackCoordinatorTests.swift */; };
+		A10014000000000000000014 /* WoodshedUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10014000000000000000014 /* WoodshedUITests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		C10001000000000000000001 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D10001000000000000000001 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E10001000000000000000001;
+			remoteInfo = Woodshed;
+		};
+		C10002000000000000000002 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D10001000000000000000001 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E10001000000000000000001;
+			remoteInfo = Woodshed;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		B10001000000000000000001 /* WoodshedApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WoodshedApp.swift; sourceTree = "<group>"; };
+		B10002000000000000000002 /* Setlist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Setlist.swift; sourceTree = "<group>"; };
+		B10003000000000000000003 /* Section.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Section.swift; sourceTree = "<group>"; };
+		B10004000000000000000004 /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
+		B10005000000000000000005 /* StorageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageService.swift; sourceTree = "<group>"; };
+		B10006000000000000000006 /* MusicKitService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicKitService.swift; sourceTree = "<group>"; };
+		B10007000000000000000007 /* PlaybackCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackCoordinator.swift; sourceTree = "<group>"; };
+		B10008000000000000000008 /* SetlistLibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetlistLibraryView.swift; sourceTree = "<group>"; };
+		B10009000000000000000009 /* SetlistDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetlistDetailView.swift; sourceTree = "<group>"; };
+		B1000A00000000000000000A /* PracticeModeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PracticeModeView.swift; sourceTree = "<group>"; };
+		B1000B00000000000000000B /* SectionEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionEditorView.swift; sourceTree = "<group>"; };
+		B1000C00000000000000000C /* SongBrowserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongBrowserView.swift; sourceTree = "<group>"; };
+		B1000D00000000000000000D /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		B1000E00000000000000000E /* TabImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabImageView.swift; sourceTree = "<group>"; };
+		B1000F00000000000000000F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		B10010000000000000000010 /* ModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelTests.swift; sourceTree = "<group>"; };
+		B10011000000000000000011 /* StorageServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageServiceTests.swift; sourceTree = "<group>"; };
+		B10012000000000000000012 /* MusicKitServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicKitServiceTests.swift; sourceTree = "<group>"; };
+		B10013000000000000000013 /* PlaybackCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackCoordinatorTests.swift; sourceTree = "<group>"; };
+		B10014000000000000000014 /* WoodshedUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WoodshedUITests.swift; sourceTree = "<group>"; };
+		B10015000000000000000015 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B10016000000000000000016 /* Woodshed.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Woodshed.entitlements; sourceTree = "<group>"; };
+		B10017000000000000000017 /* appetite-for-destruction.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "appetite-for-destruction.json"; sourceTree = "<group>"; };
+		F10001000000000000000001 /* Woodshed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Woodshed.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F10002000000000000000002 /* WoodshedTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WoodshedTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F10003000000000000000003 /* WoodshedUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WoodshedUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		FA0001000000000000000001 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FA0002000000000000000002 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FA0003000000000000000003 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		G10001000000000000000001 = {
+			isa = PBXGroup;
+			children = (
+				G10002000000000000000002 /* Woodshed */,
+				G10008000000000000000008 /* WoodshedTests */,
+				G10009000000000000000009 /* WoodshedUITests */,
+				G1000A00000000000000000A /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		G10002000000000000000002 /* Woodshed */ = {
+			isa = PBXGroup;
+			children = (
+				G10003000000000000000003 /* App */,
+				G10004000000000000000004 /* Models */,
+				G10005000000000000000005 /* Storage */,
+				G10006000000000000000006 /* Services */,
+				G10007000000000000000007 /* Views */,
+				G1000B00000000000000000B /* Resources */,
+				B1000F00000000000000000F /* Assets.xcassets */,
+				B10016000000000000000016 /* Woodshed.entitlements */,
+				B10015000000000000000015 /* Info.plist */,
+			);
+			path = Woodshed;
+			sourceTree = "<group>";
+		};
+		G10003000000000000000003 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				B10001000000000000000001 /* WoodshedApp.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		G10004000000000000000004 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				B10002000000000000000002 /* Setlist.swift */,
+				B10003000000000000000003 /* Section.swift */,
+				B10004000000000000000004 /* AppSettings.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		G10005000000000000000005 /* Storage */ = {
+			isa = PBXGroup;
+			children = (
+				B10005000000000000000005 /* StorageService.swift */,
+			);
+			path = Storage;
+			sourceTree = "<group>";
+		};
+		G10006000000000000000006 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				B10006000000000000000006 /* MusicKitService.swift */,
+				B10007000000000000000007 /* PlaybackCoordinator.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		G10007000000000000000007 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				B10008000000000000000008 /* SetlistLibraryView.swift */,
+				B10009000000000000000009 /* SetlistDetailView.swift */,
+				B1000A00000000000000000A /* PracticeModeView.swift */,
+				B1000B00000000000000000B /* SectionEditorView.swift */,
+				B1000C00000000000000000C /* SongBrowserView.swift */,
+				B1000D00000000000000000D /* SettingsView.swift */,
+				B1000E00000000000000000E /* TabImageView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		G1000B00000000000000000B /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				B10017000000000000000017 /* appetite-for-destruction.json */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		G10008000000000000000008 /* WoodshedTests */ = {
+			isa = PBXGroup;
+			children = (
+				B10010000000000000000010 /* ModelTests.swift */,
+				B10011000000000000000011 /* StorageServiceTests.swift */,
+				B10012000000000000000012 /* MusicKitServiceTests.swift */,
+				B10013000000000000000013 /* PlaybackCoordinatorTests.swift */,
+			);
+			path = WoodshedTests;
+			sourceTree = "<group>";
+		};
+		G10009000000000000000009 /* WoodshedUITests */ = {
+			isa = PBXGroup;
+			children = (
+				B10014000000000000000014 /* WoodshedUITests.swift */,
+			);
+			path = WoodshedUITests;
+			sourceTree = "<group>";
+		};
+		G1000A00000000000000000A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F10001000000000000000001 /* Woodshed.app */,
+				F10002000000000000000002 /* WoodshedTests.xctest */,
+				F10003000000000000000003 /* WoodshedUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		E10001000000000000000001 /* Woodshed */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E20001000000000000000001 /* Build configuration list for PBXNativeTarget "Woodshed" */;
+			buildPhases = (
+				SA0001000000000000000001 /* Sources */,
+				FA0001000000000000000001 /* Frameworks */,
+				RA0001000000000000000001 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Woodshed;
+			productName = Woodshed;
+			productReference = F10001000000000000000001 /* Woodshed.app */;
+			productType = "com.apple.product-type.application";
+		};
+		E10002000000000000000002 /* WoodshedTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E20002000000000000000002 /* Build configuration list for PBXNativeTarget "WoodshedTests" */;
+			buildPhases = (
+				SA0002000000000000000002 /* Sources */,
+				FA0002000000000000000002 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				TD0001000000000000000001 /* PBXTargetDependency */,
+			);
+			name = WoodshedTests;
+			productName = WoodshedTests;
+			productReference = F10002000000000000000002 /* WoodshedTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		E10003000000000000000003 /* WoodshedUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E20003000000000000000003 /* Build configuration list for PBXNativeTarget "WoodshedUITests" */;
+			buildPhases = (
+				SA0003000000000000000003 /* Sources */,
+				FA0003000000000000000003 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				TD0002000000000000000002 /* PBXTargetDependency */,
+			);
+			name = WoodshedUITests;
+			productName = WoodshedUITests;
+			productReference = F10003000000000000000003 /* WoodshedUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D10001000000000000000001 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+			};
+			buildConfigurationList = E20004000000000000000004 /* Build configuration list for PBXProject "Woodshed" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = G10001000000000000000001;
+			productRefGroup = G1000A00000000000000000A /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				E10001000000000000000001 /* Woodshed */,
+				E10002000000000000000002 /* WoodshedTests */,
+				E10003000000000000000003 /* WoodshedUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		RA0001000000000000000001 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A1000F00000000000000000F /* Assets.xcassets in Resources */,
+				A10017000000000000000017 /* appetite-for-destruction.json in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		SA0001000000000000000001 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A10001000000000000000001 /* WoodshedApp.swift in Sources */,
+				A10002000000000000000002 /* Setlist.swift in Sources */,
+				A10003000000000000000003 /* Section.swift in Sources */,
+				A10004000000000000000004 /* AppSettings.swift in Sources */,
+				A10005000000000000000005 /* StorageService.swift in Sources */,
+				A10006000000000000000006 /* MusicKitService.swift in Sources */,
+				A10007000000000000000007 /* PlaybackCoordinator.swift in Sources */,
+				A10008000000000000000008 /* SetlistLibraryView.swift in Sources */,
+				A10009000000000000000009 /* SetlistDetailView.swift in Sources */,
+				A1000A00000000000000000A /* PracticeModeView.swift in Sources */,
+				A1000B00000000000000000B /* SectionEditorView.swift in Sources */,
+				A1000C00000000000000000C /* SongBrowserView.swift in Sources */,
+				A1000D00000000000000000D /* SettingsView.swift in Sources */,
+				A1000E00000000000000000E /* TabImageView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		SA0002000000000000000002 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A10010000000000000000010 /* ModelTests.swift in Sources */,
+				A10011000000000000000011 /* StorageServiceTests.swift in Sources */,
+				A10012000000000000000012 /* MusicKitServiceTests.swift in Sources */,
+				A10013000000000000000013 /* PlaybackCoordinatorTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		SA0003000000000000000003 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A10014000000000000000014 /* WoodshedUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		TD0001000000000000000001 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E10001000000000000000001 /* Woodshed */;
+			targetProxy = C10001000000000000000001 /* PBXContainerItemProxy */;
+		};
+		TD0002000000000000000002 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E10001000000000000000001 /* Woodshed */;
+			targetProxy = C10002000000000000000002 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		BC0001000000000000000001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1 ";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = Debug;
+		};
+		BC0002000000000000000002 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_VERSION = 5.0;
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = Release;
+		};
+		BC0003000000000000000003 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Woodshed/Woodshed.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 2Y4J24S4QZ;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSAppleMusicUsageDescription = "Woodshed needs Apple Music access to search for songs and play them during practice.";
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.zeromissionllc.woodshed;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		BC0004000000000000000004 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Woodshed/Woodshed.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 2Y4J24S4QZ;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSAppleMusicUsageDescription = "Woodshed needs Apple Music access to search for songs and play them during practice.";
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.zeromissionllc.woodshed;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		BC0005000000000000000005 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				GENERATE_INFOPLIST_FILE = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.zeromissionllc.woodshed.tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Woodshed.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Woodshed";
+			};
+			name = Debug;
+		};
+		BC0006000000000000000006 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				GENERATE_INFOPLIST_FILE = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.zeromissionllc.woodshed.tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Woodshed.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Woodshed";
+			};
+			name = Release;
+		};
+		BC0007000000000000000007 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				GENERATE_INFOPLIST_FILE = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.zeromissionllc.woodshed.uitests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Woodshed;
+			};
+			name = Debug;
+		};
+		BC0008000000000000000008 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				GENERATE_INFOPLIST_FILE = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.zeromissionllc.woodshed.uitests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Woodshed;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		E20001000000000000000001 /* Build configuration list for PBXNativeTarget "Woodshed" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BC0003000000000000000003 /* Debug */,
+				BC0004000000000000000004 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E20002000000000000000002 /* Build configuration list for PBXNativeTarget "WoodshedTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BC0005000000000000000005 /* Debug */,
+				BC0006000000000000000006 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E20003000000000000000003 /* Build configuration list for PBXNativeTarget "WoodshedUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BC0007000000000000000007 /* Debug */,
+				BC0008000000000000000008 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E20004000000000000000004 /* Build configuration list for PBXProject "Woodshed" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BC0001000000000000000001 /* Debug */,
+				BC0002000000000000000002 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = D10001000000000000000001 /* Project object */;
+}

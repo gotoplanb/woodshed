@@ -1,0 +1,1 @@
+enabledWorkflows: ["simulator", "device", "ui-automation"]

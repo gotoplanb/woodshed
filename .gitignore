@@ -1,0 +1,27 @@
+# Xcode
+*.xcuserstate
+*.xcscmblueprint
+xcuserdata/
+DerivedData/
+*.moved-aside
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# Fastlane
+Woodshed/fastlane/report.xml
+Woodshed/fastlane/Preview.html
+Woodshed/fastlane/screenshots/**/*.png
+Woodshed/fastlane/test_output
+Woodshed/fastlane/README.md
+Woodshed/*.ipa
+Woodshed/*.app.dSYM.zip
+Woodshed/vendor/bundle
+Woodshed/fastlane/.env
+
+# Environment
+.env
+
+# macOS
+.DS_Store

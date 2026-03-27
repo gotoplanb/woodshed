@@ -1,0 +1,279 @@
+{
+  "createdAt" : "2026-03-27T20:00:00Z",
+  "id" : "A1B2C3D4-E5F6-7890-ABCD-EF1234567890",
+  "sections" : [
+    {
+      "appleMusicID" : "1377813288",
+      "endTime" : 30,
+      "id" : "00000001-0001-0001-0001-000000000001",
+      "instrument" : "Guitar",
+      "notes" : "Wah-wah riff. Clean tone into distortion.",
+      "role" : "Lead",
+      "songTitle" : "Welcome to the Jungle",
+      "startTime" : 0,
+      "title" : "Intro"
+    },
+    {
+      "appleMusicID" : "1377813288",
+      "endTime" : 75,
+      "id" : "00000001-0001-0001-0001-000000000002",
+      "instrument" : "Guitar",
+      "role" : "Rhythm",
+      "songTitle" : "Welcome to the Jungle",
+      "startTime" : 30,
+      "title" : "Verse 1"
+    },
+    {
+      "appleMusicID" : "1377813288",
+      "endTime" : 105,
+      "id" : "00000001-0001-0001-0001-000000000003",
+      "instrument" : "Guitar",
+      "role" : "Rhythm",
+      "songTitle" : "Welcome to the Jungle",
+      "startTime" : 75,
+      "title" : "Chorus"
+    },
+    {
+      "appleMusicID" : "1377813288",
+      "endTime" : 210,
+      "id" : "00000001-0001-0001-0001-000000000004",
+      "instrument" : "Guitar",
+      "notes" : "Talk box section around 3:00",
+      "role" : "Lead",
+      "songTitle" : "Welcome to the Jungle",
+      "startTime" : 170,
+      "title" : "Solo"
+    },
+    {
+      "appleMusicID" : "1377813289",
+      "endTime" : 25,
+      "id" : "00000002-0001-0001-0001-000000000001",
+      "instrument" : "Guitar",
+      "role" : "Rhythm",
+      "songTitle" : "It's So Easy",
+      "startTime" : 0,
+      "title" : "Intro"
+    },
+    {
+      "appleMusicID" : "1377813289",
+      "endTime" : 70,
+      "id" : "00000002-0001-0001-0001-000000000002",
+      "instrument" : "Guitar",
+      "role" : "Rhythm",
+      "songTitle" : "It's So Easy",
+      "startTime" : 25,
+      "title" : "Verse 1"
+    },
+    {
+      "appleMusicID" : "1377813289",
+      "endTime" : 100,
+      "id" : "00000002-0001-0001-0001-000000000003",
+      "instrument" : "Guitar",
+      "role" : "Rhythm",
+      "songTitle" : "It's So Easy",
+      "startTime" : 70,
+      "title" : "Chorus"
+    },
+    {
+      "appleMusicID" : "1377813292",
+      "endTime" : 20,
+      "id" : "00000003-0001-0001-0001-000000000001",
+      "instrument" : "Guitar",
+      "notes" : "Fast picking riff",
+      "role" : "Rhythm",
+      "songTitle" : "Nightrain",
+      "startTime" : 0,
+      "title" : "Intro"
+    },
+    {
+      "appleMusicID" : "1377813292",
+      "endTime" : 65,
+      "id" : "00000003-0001-0001-0001-000000000002",
+      "instrument" : "Guitar",
+      "role" : "Rhythm",
+      "songTitle" : "Nightrain",
+      "startTime" : 20,
+      "title" : "Verse 1"
+    },
+    {
+      "appleMusicID" : "1377813292",
+      "endTime" : 100,
+      "id" : "00000003-0001-0001-0001-000000000003",
+      "instrument" : "Guitar",
+      "role" : "Rhythm",
+      "songTitle" : "Nightrain",
+      "startTime" : 65,
+      "title" : "Chorus"
+    },
+    {
+      "appleMusicID" : "1377813292",
+      "endTime" : 215,
+      "id" : "00000003-0001-0001-0001-000000000004",
+      "instrument" : "Guitar",
+      "notes" : "Dual guitar harmony",
+      "role" : "Lead",
+      "songTitle" : "Nightrain",
+      "startTime" : 175,
+      "title" : "Solo"
+    },
+    {
+      "appleMusicID" : "1377813295",
+      "endTime" : 18,
+      "id" : "00000005-0001-0001-0001-000000000001",
+      "instrument" : "Guitar",
+      "notes" : "Shuffle riff",
+      "role" : "Rhythm",
+      "songTitle" : "Mr. Brownstone",
+      "startTime" : 0,
+      "title" : "Intro"
+    },
+    {
+      "appleMusicID" : "1377813295",
+      "endTime" : 60,
+      "id" : "00000005-0001-0001-0001-000000000002",
+      "instrument" : "Guitar",
+      "role" : "Rhythm",
+      "songTitle" : "Mr. Brownstone",
+      "startTime" : 18,
+      "title" : "Verse 1"
+    },
+    {
+      "appleMusicID" : "1377813295",
+      "endTime" : 90,
+      "id" : "00000005-0001-0001-0001-000000000003",
+      "instrument" : "Guitar",
+      "role" : "Rhythm",
+      "songTitle" : "Mr. Brownstone",
+      "startTime" : 60,
+      "title" : "Chorus"
+    },
+    {
+      "appleMusicID" : "1377813298",
+      "endTime" : 25,
+      "id" : "00000006-0001-0001-0001-000000000001",
+      "instrument" : "Guitar",
+      "notes" : "Clean arpeggios into distortion",
+      "role" : "Lead",
+      "songTitle" : "Paradise City",
+      "startTime" : 0,
+      "title" : "Intro"
+    },
+    {
+      "appleMusicID" : "1377813298",
+      "endTime" : 80,
+      "id" : "00000006-0001-0001-0001-000000000002",
+      "instrument" : "Guitar",
+      "role" : "Rhythm",
+      "songTitle" : "Paradise City",
+      "startTime" : 25,
+      "title" : "Verse 1"
+    },
+    {
+      "appleMusicID" : "1377813298",
+      "endTime" : 125,
+      "id" : "00000006-0001-0001-0001-000000000003",
+      "instrument" : "Guitar",
+      "role" : "Rhythm",
+      "songTitle" : "Paradise City",
+      "startTime" : 80,
+      "title" : "Chorus"
+    },
+    {
+      "appleMusicID" : "1377813298",
+      "endTime" : 310,
+      "id" : "00000006-0001-0001-0001-000000000004",
+      "instrument" : "Guitar",
+      "notes" : "Extended solo section with multiple parts",
+      "role" : "Lead",
+      "songTitle" : "Paradise City",
+      "startTime" : 260,
+      "title" : "Solo"
+    },
+    {
+      "appleMusicID" : "1377813701",
+      "endTime" : 15,
+      "id" : "00000009-0001-0001-0001-000000000001",
+      "instrument" : "Guitar",
+      "notes" : "The riff. D-C-G pattern.",
+      "role" : "Lead",
+      "songTitle" : "Sweet Child O' Mine",
+      "startTime" : 0,
+      "title" : "Intro Riff"
+    },
+    {
+      "appleMusicID" : "1377813701",
+      "endTime" : 75,
+      "id" : "00000009-0001-0001-0001-000000000002",
+      "instrument" : "Guitar",
+      "role" : "Rhythm",
+      "songTitle" : "Sweet Child O' Mine",
+      "startTime" : 30,
+      "title" : "Verse 1"
+    },
+    {
+      "appleMusicID" : "1377813701",
+      "endTime" : 115,
+      "id" : "00000009-0001-0001-0001-000000000003",
+      "instrument" : "Guitar",
+      "role" : "Rhythm",
+      "songTitle" : "Sweet Child O' Mine",
+      "startTime" : 75,
+      "title" : "Chorus"
+    },
+    {
+      "appleMusicID" : "1377813701",
+      "endTime" : 280,
+      "id" : "00000009-0001-0001-0001-000000000004",
+      "instrument" : "Guitar",
+      "notes" : "E minor pentatonic, builds intensity",
+      "role" : "Lead",
+      "songTitle" : "Sweet Child O' Mine",
+      "startTime" : 235,
+      "title" : "Solo"
+    },
+    {
+      "appleMusicID" : "1377813711",
+      "endTime" : 30,
+      "id" : "00000012-0001-0001-0001-000000000001",
+      "instrument" : "Guitar",
+      "notes" : "Heavy riff, drop to half time",
+      "role" : "Rhythm",
+      "songTitle" : "Rocket Queen",
+      "startTime" : 0,
+      "title" : "Intro"
+    },
+    {
+      "appleMusicID" : "1377813711",
+      "endTime" : 80,
+      "id" : "00000012-0001-0001-0001-000000000002",
+      "instrument" : "Guitar",
+      "role" : "Rhythm",
+      "songTitle" : "Rocket Queen",
+      "startTime" : 30,
+      "title" : "Verse 1"
+    },
+    {
+      "appleMusicID" : "1377813711",
+      "endTime" : 115,
+      "id" : "00000012-0001-0001-0001-000000000003",
+      "instrument" : "Guitar",
+      "role" : "Rhythm",
+      "songTitle" : "Rocket Queen",
+      "startTime" : 80,
+      "title" : "Chorus"
+    },
+    {
+      "appleMusicID" : "1377813711",
+      "endTime" : 275,
+      "id" : "00000012-0001-0001-0001-000000000004",
+      "instrument" : "Guitar",
+      "notes" : "Melodic section, clean tone builds back up",
+      "role" : "Lead",
+      "songTitle" : "Rocket Queen",
+      "startTime" : 230,
+      "title" : "Outro/Ballad Section"
+    }
+  ],
+  "title" : "Appetite for Destruction",
+  "updatedAt" : "2026-03-27T20:00:00Z"
+}
