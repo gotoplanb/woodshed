@@ -53,6 +53,22 @@ Woodshed/Woodshed/
 └── Views/                          # All SwiftUI views
 ```
 
+## TestFlight Delivery
+
+```bash
+cd Woodshed
+bundle exec fastlane beta
+```
+
+After upload, set encryption compliance and distribute:
+```bash
+asc builds update --app 6761284480 --latest --uses-non-exempt-encryption=false
+asc builds add-groups --app 6761284480 --latest --group "38f7e8d1-ffdb-4fb2-af54-4d7d7117479a"
+```
+
+App Store Connect app ID: `6761284480`
+App Store name: **Hermit Jam** (internal project name stays Woodshed)
+
 ## Testing
 
 **Workflow:** Simulator → Beta iPhone → TestFlight (Dave's daily carry)
