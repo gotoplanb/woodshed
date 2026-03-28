@@ -378,7 +378,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 202603272005;
+				CURRENT_PROJECT_VERSION = 202603272113;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -403,7 +403,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 202603272005;
+				CURRENT_PROJECT_VERSION = 202603272113;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -423,10 +423,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Woodshed/Woodshed.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 202603272005;
+				CURRENT_PROJECT_VERSION = 202603272113;
 				DEVELOPMENT_TEAM = 2Y4J24S4QZ;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSAppleMusicUsageDescription = "Woodshed needs Apple Music access to search for songs and play them during practice.";
+				INFOPLIST_KEY_CFBundleDisplayName = "Hermit Jam";
+				INFOPLIST_KEY_NSAppleMusicUsageDescription = "Hermit Jam needs Apple Music access to search for songs and play them during practice.";
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				"INFOPLIST_KEY_UISupportedInterfaceOrientations" = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				"INFOPLIST_KEY_UISupportedInterfaceOrientations~ipad" = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -448,10 +449,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Woodshed/Woodshed.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 202603272005;
+				CURRENT_PROJECT_VERSION = 202603272113;
 				DEVELOPMENT_TEAM = 2Y4J24S4QZ;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSAppleMusicUsageDescription = "Woodshed needs Apple Music access to search for songs and play them during practice.";
+				INFOPLIST_KEY_CFBundleDisplayName = "Hermit Jam";
+				INFOPLIST_KEY_NSAppleMusicUsageDescription = "Hermit Jam needs Apple Music access to search for songs and play them during practice.";
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				"INFOPLIST_KEY_UISupportedInterfaceOrientations" = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				"INFOPLIST_KEY_UISupportedInterfaceOrientations~ipad" = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
