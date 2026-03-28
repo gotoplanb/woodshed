@@ -14,7 +14,7 @@ struct SetlistLibraryView: View {
                     NavigationLink(destination: SetlistDetailView(setlistID: setlist.id)) {
                         VStack(alignment: .leading) {
                             Text(setlist.title)
-                            Text("\(setlist.sections.count) sections")
+                            Text("\(setlist.songs.count) songs")
                                 .font(.caption)
                                 .foregroundStyle(.secondary)
                         }

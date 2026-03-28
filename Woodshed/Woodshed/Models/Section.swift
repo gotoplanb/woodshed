@@ -3,11 +3,8 @@ import Foundation
 struct Section: Codable, Identifiable, Hashable {
     var id: UUID = UUID()
     var title: String
-    var songTitle: String
-    var appleMusicID: String
     var startTime: TimeInterval
     var endTime: TimeInterval?
-    var instrument: String
     var role: String?
     var tabImageFilename: String?
     var notes: String?

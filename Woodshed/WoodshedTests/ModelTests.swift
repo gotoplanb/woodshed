@@ -8,11 +8,8 @@ struct ModelTests {
     @Test func sectionFormattedTimeRange() {
         let section = Section(
             title: "Intro",
-            songTitle: "Welcome to the Jungle",
-            appleMusicID: "123",
             startTime: 32.5,
-            endTime: 75.0,
-            instrument: "Guitar"
+            endTime: 75.0
         )
         #expect(section.formattedTimeRange == "0:32 – 1:15")
         #expect(section.duration == 42.5)
@@ -21,10 +18,7 @@ struct ModelTests {
     @Test func sectionOpenEndedTimeRange() {
         let section = Section(
             title: "Outro",
-            songTitle: "Paradise City",
-            appleMusicID: "456",
-            startTime: 180,
-            instrument: "Guitar"
+            startTime: 180
         )
         #expect(section.formattedTimeRange == "3:00 – end")
         #expect(section.duration == nil)
@@ -40,31 +34,44 @@ struct ModelTests {
         #expect(setlist.slug == "gnr-lies-deluxe")
     }
 
-    @Test func sectionsBySongGrouping() {
-        let setlist = Setlist(title: "Test", sections: [
-            Section(title: "Intro", songTitle: "Song A", appleMusicID: "1", startTime: 0, instrument: "Guitar"),
-            Section(title: "Verse", songTitle: "Song B", appleMusicID: "2", startTime: 0, instrument: "Guitar"),
-            Section(title: "Chorus", songTitle: "Song A", appleMusicID: "1", startTime: 30, instrument: "Guitar"),
+    @Test func songWithSections() {
+        let song = SongEntry(
+            title: "Mr. Brownstone",
+            appleMusicID: "123",
+            instrument: "Guitar",
+            sections: [
+                Section(title: "Intro", startTime: 0, endTime: 18),
+                Section(title: "Verse", startTime: 18, endTime: 60),
+            ]
+        )
+        #expect(song.sections.count == 2)
+        #expect(song.sections[0].title == "Intro")
+    }
+
+    @Test func setlistWithSongs() {
+        let setlist = Setlist(title: "Test", songs: [
+            SongEntry(title: "Song A", appleMusicID: "1"),
+            SongEntry(title: "Song B", appleMusicID: "2"),
         ])
-        let groups = setlist.sectionsBySong
-        #expect(groups.count == 2)
-        #expect(groups[0].songTitle == "Song A")
-        #expect(groups[0].sections.count == 2)
-        #expect(groups[1].songTitle == "Song B")
-        #expect(groups[1].sections.count == 1)
+        #expect(setlist.songs.count == 2)
     }
 
     @Test func setlistCodableRoundTrip() throws {
-        let original = Setlist(title: "Test Setlist", sections: [
-            Section(title: "Intro", songTitle: "Song", appleMusicID: "123", startTime: 10, endTime: 30, instrument: "Guitar", role: "Lead"),
+        let original = Setlist(title: "Test Setlist", songs: [
+            SongEntry(title: "Test Song", appleMusicID: "123", instrument: "Bass", sections: [
+                Section(title: "Intro", startTime: 10, endTime: 30, role: "Lead"),
+            ]),
         ])
         let data = try JSONEncoder.woodshed.encode(original)
         let decoded = try JSONDecoder.woodshed.decode(Setlist.self, from: data)
         #expect(decoded.id == original.id)
         #expect(decoded.title == original.title)
-        #expect(decoded.sections.count == 1)
-        #expect(decoded.sections[0].startTime == 10)
-        #expect(decoded.sections[0].role == "Lead")
+        #expect(decoded.songs.count == 1)
+        #expect(decoded.songs[0].title == "Test Song")
+        #expect(decoded.songs[0].instrument == "Bass")
+        #expect(decoded.songs[0].sections.count == 1)
+        #expect(decoded.songs[0].sections[0].startTime == 10)
+        #expect(decoded.songs[0].sections[0].role == "Lead")
     }
 
     @Test func appSettingsCodableRoundTrip() throws {

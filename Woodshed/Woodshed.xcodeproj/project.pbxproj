@@ -11,12 +11,14 @@
 		A10002000000000000000002 /* Setlist.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10002000000000000000002 /* Setlist.swift */; };
 		A10003000000000000000003 /* Section.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10003000000000000000003 /* Section.swift */; };
 		A10004000000000000000004 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10004000000000000000004 /* AppSettings.swift */; };
+		A10020000000000000000020 /* Song.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10020000000000000000020 /* Song.swift */; };
 		A10005000000000000000005 /* StorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10005000000000000000005 /* StorageService.swift */; };
 		A10006000000000000000006 /* MusicKitService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10006000000000000000006 /* MusicKitService.swift */; };
 		A10007000000000000000007 /* PlaybackCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10007000000000000000007 /* PlaybackCoordinator.swift */; };
 		A10008000000000000000008 /* SetlistLibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10008000000000000000008 /* SetlistLibraryView.swift */; };
 		A10009000000000000000009 /* SetlistDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10009000000000000000009 /* SetlistDetailView.swift */; };
-		A1000A00000000000000000A /* PracticeModeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000A00000000000000000A /* PracticeModeView.swift */; };
+		A1000A00000000000000000A /* JamModeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000A00000000000000000A /* JamModeView.swift */; };
+		A10021000000000000000021 /* SongDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10021000000000000000021 /* SongDetailView.swift */; };
 		A1000B00000000000000000B /* SectionEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000B00000000000000000B /* SectionEditorView.swift */; };
 		A1000C00000000000000000C /* SongBrowserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000C00000000000000000C /* SongBrowserView.swift */; };
 		A1000D00000000000000000D /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000D00000000000000000D /* SettingsView.swift */; };
@@ -54,12 +56,14 @@
 		B10002000000000000000002 /* Setlist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Setlist.swift; sourceTree = "<group>"; };
 		B10003000000000000000003 /* Section.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Section.swift; sourceTree = "<group>"; };
 		B10004000000000000000004 /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
+		B10020000000000000000020 /* Song.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Song.swift; sourceTree = "<group>"; };
 		B10005000000000000000005 /* StorageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageService.swift; sourceTree = "<group>"; };
 		B10006000000000000000006 /* MusicKitService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicKitService.swift; sourceTree = "<group>"; };
 		B10007000000000000000007 /* PlaybackCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackCoordinator.swift; sourceTree = "<group>"; };
 		B10008000000000000000008 /* SetlistLibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetlistLibraryView.swift; sourceTree = "<group>"; };
 		B10009000000000000000009 /* SetlistDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetlistDetailView.swift; sourceTree = "<group>"; };
-		B1000A00000000000000000A /* PracticeModeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PracticeModeView.swift; sourceTree = "<group>"; };
+		B1000A00000000000000000A /* JamModeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JamModeView.swift; sourceTree = "<group>"; };
+		B10021000000000000000021 /* SongDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongDetailView.swift; sourceTree = "<group>"; };
 		B1000B00000000000000000B /* SectionEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionEditorView.swift; sourceTree = "<group>"; };
 		B1000C00000000000000000C /* SongBrowserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongBrowserView.swift; sourceTree = "<group>"; };
 		B1000D00000000000000000D /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
@@ -144,6 +148,7 @@
 			children = (
 				B10002000000000000000002 /* Setlist.swift */,
 				B10003000000000000000003 /* Section.swift */,
+				B10020000000000000000020 /* Song.swift */,
 				B10004000000000000000004 /* AppSettings.swift */,
 			);
 			path = Models;
@@ -171,7 +176,8 @@
 			children = (
 				B10008000000000000000008 /* SetlistLibraryView.swift */,
 				B10009000000000000000009 /* SetlistDetailView.swift */,
-				B1000A00000000000000000A /* PracticeModeView.swift */,
+				B1000A00000000000000000A /* JamModeView.swift */,
+				B10021000000000000000021 /* SongDetailView.swift */,
 				B1000B00000000000000000B /* SectionEditorView.swift */,
 				B1000C00000000000000000C /* SongBrowserView.swift */,
 				B1000D00000000000000000D /* SettingsView.swift */,
@@ -322,12 +328,14 @@
 				A10002000000000000000002 /* Setlist.swift in Sources */,
 				A10003000000000000000003 /* Section.swift in Sources */,
 				A10004000000000000000004 /* AppSettings.swift in Sources */,
+				A10020000000000000000020 /* Song.swift in Sources */,
 				A10005000000000000000005 /* StorageService.swift in Sources */,
 				A10006000000000000000006 /* MusicKitService.swift in Sources */,
 				A10007000000000000000007 /* PlaybackCoordinator.swift in Sources */,
 				A10008000000000000000008 /* SetlistLibraryView.swift in Sources */,
 				A10009000000000000000009 /* SetlistDetailView.swift in Sources */,
-				A1000A00000000000000000A /* PracticeModeView.swift in Sources */,
+				A1000A00000000000000000A /* JamModeView.swift in Sources */,
+				A10021000000000000000021 /* SongDetailView.swift in Sources */,
 				A1000B00000000000000000B /* SectionEditorView.swift in Sources */,
 				A1000C00000000000000000C /* SongBrowserView.swift in Sources */,
 				A1000D00000000000000000D /* SettingsView.swift in Sources */,

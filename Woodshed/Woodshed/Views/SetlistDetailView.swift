@@ -3,9 +3,8 @@ import SwiftUI
 struct SetlistDetailView: View {
     @Environment(StorageService.self) private var storage
     let setlistID: UUID
-    @State private var practiceStartIndex: Int?
-    @State private var practiceLoopDefault = false
-    @State private var showPracticeMode = false
+    @State private var showJamMode = false
+    @State private var jamStartIndex = 0
 
     private var setlist: Setlist? {
         storage.setlists.first { $0.id == setlistID }
@@ -19,41 +18,33 @@ struct SetlistDetailView: View {
                 ContentUnavailableView("Setlist Not Found", systemImage: "exclamationmark.triangle")
             }
         }
-        .navigationDestination(isPresented: $showPracticeMode) {
-            if let startIndex = practiceStartIndex {
-                PracticeModeView(setlistID: setlistID, startIndex: startIndex, loopDefault: practiceLoopDefault)
+        .navigationDestination(isPresented: $showJamMode) {
+            if let setlist {
+                JamModeView(setlistID: setlistID, startIndex: jamStartIndex)
             }
         }
     }
 
     private func content(_ setlist: Setlist) -> some View {
         List {
-            ForEach(Array(setlist.sections.enumerated()), id: \.element.id) { index, section in
-                NavigationLink(destination: SectionEditorView(setlistID: setlistID, sectionID: section.id)) {
-                    sectionRow(section)
+            ForEach(Array(setlist.songs.enumerated()), id: \.element.id) { index, song in
+                NavigationLink(destination: SongDetailView(setlistID: setlistID, songID: song.id)) {
+                    songRow(song)
                 }
                 .swipeActions(edge: .trailing) {
                     Button("Delete", role: .destructive) {
-                        deleteSection(at: index)
+                        deleteSong(at: index)
                     }
-                }
-                .swipeActions(edge: .leading) {
-                    Button {
-                        practiceStartIndex = index
-                        practiceLoopDefault = true
-                        showPracticeMode = true
-                    } label: {
-                        Label("Play", systemImage: "play.fill")
-                    }
-                    .tint(.green)
                 }
             }
-            .onMove(perform: moveSections)
+            .onMove(perform: moveSongs)
         }
         .navigationTitle(setlist.title)
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
-                NavigationLink(destination: SectionEditorView(setlistID: setlistID, sectionID: nil)) {
+                NavigationLink(destination: SongBrowserView { id, title in
+                    addSong(appleMusicID: id, title: title)
+                }) {
                     Image(systemName: "plus")
                 }
             }
@@ -61,62 +52,62 @@ struct SetlistDetailView: View {
                 EditButton()
             }
             ToolbarItem(placement: .bottomBar) {
-                if !setlist.sections.isEmpty {
+                if !setlist.songs.isEmpty {
                     Button {
-                        practiceStartIndex = 0
-                        practiceLoopDefault = false
-                        showPracticeMode = true
+                        jamStartIndex = 0
+                        showJamMode = true
                     } label: {
-                        Label("Play All", systemImage: "play.fill")
+                        Label("Jam", systemImage: "play.fill")
                     }
                 }
             }
         }
         .overlay {
-            if setlist.sections.isEmpty {
-                ContentUnavailableView("No Sections", systemImage: "music.note", description: Text("Tap + to add a section."))
+            if setlist.songs.isEmpty {
+                ContentUnavailableView("No Songs", systemImage: "music.note", description: Text("Tap + to add a song."))
             }
         }
     }
 
-    private func sectionRow(_ section: Section) -> some View {
+    private func songRow(_ song: SongEntry) -> some View {
         VStack(alignment: .leading, spacing: 4) {
+            Text(song.title)
             HStack {
-                Text(section.title)
-                Spacer()
-                if section.tabImageFilename != nil {
-                    Image(systemName: "doc.richtext")
-                        .foregroundStyle(.secondary)
-                        .font(.caption)
-                }
-            }
-            HStack {
-                Text(section.songTitle)
+                Text(song.instrument)
                     .foregroundStyle(.secondary)
                 Spacer()
-                Text(section.instrument)
-                    .foregroundStyle(.secondary)
-                if let role = section.role {
-                    Text("· \(role)")
+                if song.sections.isEmpty {
+                    Text("No sections")
+                        .foregroundStyle(.tertiary)
+                } else {
+                    Text("\(song.sections.count) sections")
                         .foregroundStyle(.secondary)
                 }
             }
             .font(.caption)
-            Text(section.formattedTimeRange)
-                .font(.caption.monospaced())
-                .foregroundStyle(.tertiary)
         }
     }
 
-    private func deleteSection(at index: Int) {
+    private func addSong(appleMusicID: String, title: String) {
         guard var setlist = setlist else { return }
-        setlist.sections.remove(at: index)
+        let song = SongEntry(
+            title: title,
+            appleMusicID: appleMusicID,
+            instrument: storage.settings.defaultInstrument
+        )
+        setlist.songs.append(song)
         storage.save(setlist)
     }
 
-    private func moveSections(from source: IndexSet, to destination: Int) {
+    private func deleteSong(at index: Int) {
         guard var setlist = setlist else { return }
-        setlist.sections.move(fromOffsets: source, toOffset: destination)
+        setlist.songs.remove(at: index)
+        storage.save(setlist)
+    }
+
+    private func moveSongs(from source: IndexSet, to destination: Int) {
+        guard var setlist = setlist else { return }
+        setlist.songs.move(fromOffsets: source, toOffset: destination)
         storage.save(setlist)
     }
 }

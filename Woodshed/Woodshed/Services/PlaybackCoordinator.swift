@@ -4,115 +4,89 @@ import MediaPlayer
 import MusicKit
 import Observation
 
-enum PlaybackEngine {
-    case musicKit(Song)
-    case avFoundation(AVAudioPlayer)
+enum PlaybackMode {
+    case jam       // Whole songs, no section awareness
+    case practice  // Section-aware with loop and timestamps
 }
 
 @Observable
 final class PlaybackCoordinator {
-    var currentSectionIndex: Int = 0
+    // Shared state
     var isPlaying: Bool = false
+    var currentPlaybackTime: TimeInterval = 0
+    var isSessionActive: Bool = false
+    var playbackError: String?
+
+    // Jam mode state
+    var songs: [SongEntry] = []
+    var currentSongIndex: Int = 0
+
+    // Practice mode state
+    var currentSong: SongEntry?
+    var currentSectionIndex: Int = 0
     var isLooping: Bool = false
     var playbackRate: Float = 1.0
-    var currentPlaybackTime: TimeInterval = 0
     var rateControlAvailable: Bool = false
+
+    // Countdown
+    var countdownSeconds: Int = 0
     var countdownRemaining: Int = 0
     var isCountingDown: Bool = false
 
-    var sections: [Section] = []
-    var isSessionActive: Bool = false
-    var countdownSeconds: Int = 0
-    var playbackError: String?
-
+    var mode: PlaybackMode = .jam
     private let musicService: MusicKitService
     private var monitorTimer: Timer?
-    private var currentEngine: PlaybackEngine?
-    private var avPlayer: AVAudioPlayer?
 
-    var currentSection: Section? {
-        guard sections.indices.contains(currentSectionIndex) else { return nil }
-        return sections[currentSectionIndex]
+    // MARK: - Computed Properties
+
+    /// Current song in Jam Mode
+    var currentJamSong: SongEntry? {
+        guard mode == .jam, songs.indices.contains(currentSongIndex) else { return nil }
+        return songs[currentSongIndex]
     }
 
-    var sectionProgress: Double {
-        guard let section = currentSection else { return 0 }
-        guard let duration = section.duration, duration > 0 else { return 0 }
-        let elapsed = currentPlaybackTime - section.startTime
-        return min(max(elapsed / duration, 0), 1)
+    /// Current section in Practice Mode
+    var currentSection: Section? {
+        guard mode == .practice, let song = currentSong else { return nil }
+        guard song.sections.indices.contains(currentSectionIndex) else { return nil }
+        return song.sections[currentSectionIndex]
+    }
+
+    /// Progress through the current song (0-1), used in both modes
+    var songProgress: Double {
+        // MusicKit doesn't give us duration easily, so just show time
+        // For a rough progress, use playbackTime / estimated duration
+        // This is approximate — we could get duration from the Song metadata
+        0
     }
 
     init(musicService: MusicKitService) {
         self.musicService = musicService
     }
 
-    private func configureAudioSession() {
-        do {
-            try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default)
-            try AVAudioSession.sharedInstance().setActive(true)
-        } catch {
-            print("Audio session setup failed: \(error)")
-        }
-    }
+    // MARK: - Jam Mode
 
-    func startSession(sections: [Section], startIndex: Int, loopDefault: Bool) async {
-        self.sections = sections
-        self.currentSectionIndex = startIndex
-        self.isLooping = loopDefault
+    func startJamSession(songs: [SongEntry], startIndex: Int) async {
+        self.mode = .jam
+        self.songs = songs
+        self.currentSongIndex = startIndex
         self.isSessionActive = true
-        await playCurrentSection()
+        self.isLooping = false
+        await playCurrentSongForJam()
     }
 
-    func playCurrentSection() async {
-        guard let section = currentSection else {
-            print("PlaybackCoordinator: No current section at index \(currentSectionIndex)")
-            return
-        }
-
-        print("PlaybackCoordinator: Playing section '\(section.title)' of '\(section.songTitle)' (ID: \(section.appleMusicID))")
+    private func playCurrentSongForJam() async {
+        guard let song = currentJamSong else { return }
 
         configureAudioSession()
 
-        // Stop any current playback
-        stopCurrentPlayback()
-
-        // TODO: Re-enable once MPMediaQuery crash is resolved
-        // Local track detection disabled — MPMediaLibrary crashes on iOS 26.4
-        if false, let player = findLocalTrack(appleMusicID: section.appleMusicID) {
-            print("PlaybackCoordinator: Using AVFoundation (local track)")
-            currentEngine = .avFoundation(player)
-            avPlayer = player
-            rateControlAvailable = true
-
-            if countdownSeconds > 0 {
-                await runCountdown()
-            }
-
-            player.enableRate = true
-            player.rate = playbackRate
-            player.currentTime = section.startTime
-            player.play()
-            isPlaying = true
-            startMonitoring()
-            return
-        }
-
-        // Fall back to MusicKit streaming
-        let song = await musicService.lookupSong(byID: section.appleMusicID, title: section.songTitle)
-        guard let song else {
+        let found = await musicService.lookupSong(byID: song.appleMusicID, title: song.title)
+        guard let found else {
             playbackError = "Song not found in Apple Music"
-            isPlaying = false
             return
         }
 
-        currentEngine = .musicKit(song)
-        rateControlAvailable = false
-
-        if countdownSeconds > 0 {
-            await runCountdown()
-        }
-
-        await musicService.play(song: song, startTime: section.startTime)
+        await musicService.play(song: found, startTime: 0)
         if let error = musicService.lastError {
             playbackError = error
         } else {
@@ -122,40 +96,72 @@ final class PlaybackCoordinator {
         }
     }
 
-    private func runCountdown() async {
-        isCountingDown = true
-        countdownRemaining = countdownSeconds
-        while countdownRemaining > 0 {
-            try? await Task.sleep(for: .seconds(1))
-            countdownRemaining -= 1
+    func nextSong() async {
+        guard mode == .jam else { return }
+        guard currentSongIndex < songs.count - 1 else {
+            endSession()
+            return
         }
-        isCountingDown = false
+        currentSongIndex += 1
+        await playCurrentSongForJam()
     }
 
-    func pause() {
-        switch currentEngine {
-        case .avFoundation(let player):
-            player.pause()
-        case .musicKit:
-            musicService.pause()
-        case nil:
-            break
+    func previousSong() async {
+        guard mode == .jam else { return }
+        guard currentSongIndex > 0 else { return }
+        currentSongIndex -= 1
+        await playCurrentSongForJam()
+    }
+
+    // MARK: - Practice Mode
+
+    func startPracticeSession(song: SongEntry) async {
+        self.mode = .practice
+        self.currentSong = song
+        self.currentSectionIndex = 0
+        self.isSessionActive = true
+        self.isLooping = false
+        self.playbackRate = 1.0
+
+        configureAudioSession()
+
+        let found = await musicService.lookupSong(byID: song.appleMusicID, title: song.title)
+        guard let found else {
+            playbackError = "Song not found in Apple Music"
+            return
         }
+
+        // TODO: detect local vs streaming for rate control
+        rateControlAvailable = false
+
+        await musicService.play(song: found, startTime: 0)
+        if let error = musicService.lastError {
+            playbackError = error
+        } else {
+            isPlaying = true
+            playbackError = nil
+            startMonitoring()
+        }
+    }
+
+    func seekToSection(_ index: Int) {
+        guard mode == .practice, let song = currentSong else { return }
+        guard song.sections.indices.contains(index) else { return }
+        currentSectionIndex = index
+        let section = song.sections[index]
+        musicService.seek(to: section.startTime)
+    }
+
+    // MARK: - Shared Controls
+
+    func pause() {
+        musicService.pause()
         isPlaying = false
     }
 
     func resume() async {
-        switch currentEngine {
-        case .avFoundation(let player):
-            player.rate = playbackRate
-            player.play()
-            isPlaying = true
-        case .musicKit:
-            await musicService.resume()
-            isPlaying = true
-        case nil:
-            break
-        }
+        await musicService.resume()
+        isPlaying = true
     }
 
     func togglePlayPause() async {
@@ -166,97 +172,37 @@ final class PlaybackCoordinator {
         }
     }
 
-    func setRate(_ rate: Float) {
-        playbackRate = rate
-        if case .avFoundation(let player) = currentEngine, player.isPlaying {
-            player.rate = rate
-        }
-    }
-
-    func nextSection() async {
-        guard currentSectionIndex < sections.count - 1 else {
-            endSession()
-            return
-        }
-        currentSectionIndex += 1
-        await playCurrentSection()
-    }
-
-    func previousSection() async {
-        guard currentSectionIndex > 0 else { return }
-        currentSectionIndex -= 1
-        await playCurrentSection()
-    }
-
     func toggleLoop() {
         isLooping.toggle()
     }
 
+    func setRate(_ rate: Float) {
+        playbackRate = rate
+        // TODO: apply to AVAudioPlayer when local playback is enabled
+    }
+
     func endSession() {
-        stopCurrentPlayback()
+        musicService.stop()
         isPlaying = false
         isSessionActive = false
         isCountingDown = false
         countdownRemaining = 0
-        sections = []
+        songs = []
+        currentSong = nil
+        currentSongIndex = 0
         currentSectionIndex = 0
-        currentEngine = nil
+        playbackError = nil
         stopMonitoring()
     }
 
-    private func stopCurrentPlayback() {
-        switch currentEngine {
-        case .avFoundation(let player):
-            player.stop()
-        case .musicKit:
-            musicService.stop()
-        case nil:
-            break
-        }
-    }
+    // MARK: - Audio Session
 
-    // MARK: - Local Track Detection
-
-    private func findLocalTrack(appleMusicID: String) -> AVAudioPlayer? {
-        // Check media library authorization first
-        let authStatus = MPMediaLibrary.authorizationStatus()
-        print("PlaybackCoordinator: Media library auth status: \(authStatus.rawValue)")
-        guard authStatus == .authorized else {
-            print("PlaybackCoordinator: Media library not authorized, skipping local track lookup")
-            return nil
-        }
-
-        print("PlaybackCoordinator: Searching local library for ID \(appleMusicID)")
-
-        // Query the local media library for a track matching this Apple Music ID
-        // MPMediaItemPropertyPlaybackStoreID matches the Apple Music catalog ID
-        let predicate = MPMediaPropertyPredicate(
-            value: appleMusicID,
-            forProperty: MPMediaItemPropertyPlaybackStoreID,
-            comparisonType: .equalTo
-        )
-        let query = MPMediaQuery()
-        query.addFilterPredicate(predicate)
-
-        guard let item = query.items?.first else {
-            print("PlaybackCoordinator: No local item found")
-            return nil
-        }
-
-        guard let assetURL = item.assetURL else {
-            print("PlaybackCoordinator: Item found but no assetURL (DRM protected or cloud-only)")
-            return nil
-        }
-
-        print("PlaybackCoordinator: Found local track at \(assetURL)")
-
+    private func configureAudioSession() {
         do {
-            let player = try AVAudioPlayer(contentsOf: assetURL)
-            player.prepareToPlay()
-            return player
+            try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default)
+            try AVAudioSession.sharedInstance().setActive(true)
         } catch {
-            print("PlaybackCoordinator: Failed to create AVAudioPlayer: \(error)")
-            return nil
+            print("Audio session setup failed: \(error)")
         }
     }
 
@@ -268,21 +214,10 @@ final class PlaybackCoordinator {
             self?.monitorTimer = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: true) { [weak self] _ in
                 guard let self else { return }
                 Task { @MainActor in
-                    self.updatePlaybackTime()
-                    await self.checkEndTime()
+                    self.currentPlaybackTime = ApplicationMusicPlayer.shared.playbackTime
+                    await self.checkBoundaries()
                 }
             }
-        }
-    }
-
-    private func updatePlaybackTime() {
-        switch currentEngine {
-        case .avFoundation(let player):
-            currentPlaybackTime = player.currentTime
-        case .musicKit:
-            currentPlaybackTime = musicService.currentPlaybackTime
-        case nil:
-            break
         }
     }
 
@@ -291,30 +226,35 @@ final class PlaybackCoordinator {
         monitorTimer = nil
     }
 
-    private func checkEndTime() async {
-        guard isPlaying else { return }
-        guard let section = currentSection, let endTime = section.endTime else { return }
-        guard currentPlaybackTime >= endTime else { return }
-        // Only advance if we've been playing this section (not stale time from previous section)
-        guard currentPlaybackTime >= section.startTime else { return }
-
-        if isLooping {
-            seekToStart(section)
-        } else {
-            pause()
-            try? await Task.sleep(for: .milliseconds(500))
-            await nextSection()
+    private func checkBoundaries() async {
+        switch mode {
+        case .jam:
+            // In Jam Mode, we don't check boundaries — MusicKit handles end-of-song
+            // The player state will change when the song ends naturally
+            break
+        case .practice:
+            await checkSectionBoundary()
         }
     }
 
-    private func seekToStart(_ section: Section) {
-        switch currentEngine {
-        case .avFoundation(let player):
-            player.currentTime = section.startTime
-        case .musicKit:
-            musicService.seek(to: section.startTime)
-        case nil:
-            break
+    private func checkSectionBoundary() async {
+        guard isPlaying, let song = currentSong else { return }
+
+        // Update current section index based on playback position
+        if let newIndex = song.sections.lastIndex(where: { currentPlaybackTime >= $0.startTime }) {
+            if newIndex != currentSectionIndex {
+                currentSectionIndex = newIndex
+            }
         }
+
+        // Check if we've reached the end of the current section
+        guard let section = currentSection, let endTime = section.endTime else { return }
+        guard currentPlaybackTime >= endTime else { return }
+
+        if isLooping {
+            musicService.seek(to: section.startTime)
+        }
+        // If not looping, just let the song keep playing — it'll naturally advance
+        // to the next section based on the timestamp check above
     }
 }
