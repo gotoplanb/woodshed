@@ -40,13 +40,6 @@ struct SongDetailView: View {
             }
         }
         .navigationTitle(song.title)
-        .toolbar {
-            ToolbarItem(placement: .primaryAction) {
-                NavigationLink(destination: SectionEditorView(setlistID: setlistID, songID: songID, sectionID: nil)) {
-                    Image(systemName: "plus")
-                }
-            }
-        }
         .task {
             guard !coordinator.isSessionActive else { return }
             await coordinator.startPracticeSession(song: song)

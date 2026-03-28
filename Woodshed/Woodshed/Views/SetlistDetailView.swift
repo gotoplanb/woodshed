@@ -42,13 +42,6 @@ struct SetlistDetailView: View {
         .navigationTitle(setlist.title)
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
-                NavigationLink(destination: SongBrowserView { id, title in
-                    addSong(appleMusicID: id, title: title)
-                }) {
-                    Image(systemName: "plus")
-                }
-            }
-            ToolbarItem(placement: .primaryAction) {
                 EditButton()
             }
             ToolbarItem(placement: .bottomBar) {
@@ -86,17 +79,6 @@ struct SetlistDetailView: View {
             }
             .font(.caption)
         }
-    }
-
-    private func addSong(appleMusicID: String, title: String) {
-        guard var setlist = setlist else { return }
-        let song = SongEntry(
-            title: title,
-            appleMusicID: appleMusicID,
-            instrument: storage.settings.defaultInstrument
-        )
-        setlist.songs.append(song)
-        storage.save(setlist)
     }
 
     private func deleteSong(at index: Int) {

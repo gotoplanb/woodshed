@@ -19,8 +19,8 @@
 		A10009000000000000000009 /* SetlistDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10009000000000000000009 /* SetlistDetailView.swift */; };
 		A1000A00000000000000000A /* JamModeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000A00000000000000000A /* JamModeView.swift */; };
 		A10021000000000000000021 /* SongDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10021000000000000000021 /* SongDetailView.swift */; };
-		A1000B00000000000000000B /* SectionEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000B00000000000000000B /* SectionEditorView.swift */; };
-		A1000C00000000000000000C /* SongBrowserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000C00000000000000000C /* SongBrowserView.swift */; };
+		A10022000000000000000022 /* PlaylistImportService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10022000000000000000022 /* PlaylistImportService.swift */; };
+		A10023000000000000000023 /* PlaylistPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10023000000000000000023 /* PlaylistPickerView.swift */; };
 		A1000D00000000000000000D /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000D00000000000000000D /* SettingsView.swift */; };
 		A1000E00000000000000000E /* TabImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000E00000000000000000E /* TabImageView.swift */; };
 		A1000F00000000000000000F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B1000F00000000000000000F /* Assets.xcassets */; };
@@ -64,8 +64,8 @@
 		B10009000000000000000009 /* SetlistDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetlistDetailView.swift; sourceTree = "<group>"; };
 		B1000A00000000000000000A /* JamModeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JamModeView.swift; sourceTree = "<group>"; };
 		B10021000000000000000021 /* SongDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongDetailView.swift; sourceTree = "<group>"; };
-		B1000B00000000000000000B /* SectionEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionEditorView.swift; sourceTree = "<group>"; };
-		B1000C00000000000000000C /* SongBrowserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongBrowserView.swift; sourceTree = "<group>"; };
+		B10022000000000000000022 /* PlaylistImportService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistImportService.swift; sourceTree = "<group>"; };
+		B10023000000000000000023 /* PlaylistPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistPickerView.swift; sourceTree = "<group>"; };
 		B1000D00000000000000000D /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		B1000E00000000000000000E /* TabImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabImageView.swift; sourceTree = "<group>"; };
 		B1000F00000000000000000F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -167,6 +167,7 @@
 			children = (
 				B10006000000000000000006 /* MusicKitService.swift */,
 				B10007000000000000000007 /* PlaybackCoordinator.swift */,
+				B10022000000000000000022 /* PlaylistImportService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -178,8 +179,7 @@
 				B10009000000000000000009 /* SetlistDetailView.swift */,
 				B1000A00000000000000000A /* JamModeView.swift */,
 				B10021000000000000000021 /* SongDetailView.swift */,
-				B1000B00000000000000000B /* SectionEditorView.swift */,
-				B1000C00000000000000000C /* SongBrowserView.swift */,
+				B10023000000000000000023 /* PlaylistPickerView.swift */,
 				B1000D00000000000000000D /* SettingsView.swift */,
 				B1000E00000000000000000E /* TabImageView.swift */,
 			);
@@ -336,8 +336,8 @@
 				A10009000000000000000009 /* SetlistDetailView.swift in Sources */,
 				A1000A00000000000000000A /* JamModeView.swift in Sources */,
 				A10021000000000000000021 /* SongDetailView.swift in Sources */,
-				A1000B00000000000000000B /* SectionEditorView.swift in Sources */,
-				A1000C00000000000000000C /* SongBrowserView.swift in Sources */,
+				A10022000000000000000022 /* PlaylistImportService.swift in Sources */,
+				A10023000000000000000023 /* PlaylistPickerView.swift in Sources */,
 				A1000D00000000000000000D /* SettingsView.swift in Sources */,
 				A1000E00000000000000000E /* TabImageView.swift in Sources */,
 			);

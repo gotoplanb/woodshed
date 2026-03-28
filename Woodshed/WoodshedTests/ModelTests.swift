@@ -74,6 +74,33 @@ struct ModelTests {
         #expect(decoded.songs[0].sections[0].role == "Lead")
     }
 
+    @Test func decodeWithMissingIDs() throws {
+        // Simulates hand-edited JSON without UUIDs
+        let json = """
+        {
+          "title": "Hand Edited",
+          "songs": [
+            {
+              "title": "Test Song",
+              "appleMusicID": "123",
+              "sections": [
+                { "title": "Intro", "startTime": 0, "endTime": 15 }
+              ]
+            }
+          ]
+        }
+        """.data(using: .utf8)!
+
+        let decoded = try JSONDecoder.woodshed.decode(Setlist.self, from: json)
+        #expect(decoded.title == "Hand Edited")
+        #expect(decoded.id != UUID()) // auto-generated, non-nil
+        #expect(decoded.songs.count == 1)
+        #expect(decoded.songs[0].title == "Test Song")
+        #expect(decoded.songs[0].instrument == "Guitar") // default
+        #expect(decoded.songs[0].sections.count == 1)
+        #expect(decoded.songs[0].sections[0].title == "Intro")
+    }
+
     @Test func appSettingsCodableRoundTrip() throws {
         var settings = AppSettings()
         settings.countdownSeconds = 3

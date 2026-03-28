@@ -2,8 +2,7 @@ import SwiftUI
 
 struct SetlistLibraryView: View {
     @Environment(StorageService.self) private var storage
-    @State private var showingNewSetlist = false
-    @State private var newSetlistTitle = ""
+    @State private var showingPlaylistPicker = false
     @State private var renamingSetlist: Setlist?
     @State private var renameTitle = ""
 
@@ -35,13 +34,16 @@ struct SetlistLibraryView: View {
                 }
                 .onDelete(perform: deleteSetlists)
             }
-            .navigationTitle("Woodshed")
+            .refreshable {
+                storage.loadAllSetlists()
+            }
+            .navigationTitle("Hermit Jam")
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {
                     Button {
-                        showingNewSetlist = true
+                        showingPlaylistPicker = true
                     } label: {
-                        Image(systemName: "plus")
+                        Label("Import", systemImage: "square.and.arrow.down")
                     }
                 }
                 ToolbarItem(placement: .navigation) {
@@ -52,20 +54,11 @@ struct SetlistLibraryView: View {
             }
             .overlay {
                 if storage.setlists.isEmpty {
-                    ContentUnavailableView("No Setlists", systemImage: "music.note.list", description: Text("Tap + to create your first setlist."))
+                    ContentUnavailableView("No Setlists", systemImage: "music.note.list", description: Text("Import a playlist from Apple Music to get started."))
                 }
             }
-            .alert("New Setlist", isPresented: $showingNewSetlist) {
-                TextField("Title", text: $newSetlistTitle)
-                Button("Create") {
-                    guard !newSetlistTitle.trimmingCharacters(in: .whitespaces).isEmpty else { return }
-                    let setlist = Setlist(title: newSetlistTitle.trimmingCharacters(in: .whitespaces))
-                    storage.save(setlist)
-                    newSetlistTitle = ""
-                }
-                Button("Cancel", role: .cancel) {
-                    newSetlistTitle = ""
-                }
+            .sheet(isPresented: $showingPlaylistPicker) {
+                PlaylistPickerView()
             }
             .alert("Rename Setlist", isPresented: Binding(
                 get: { renamingSetlist != nil },
