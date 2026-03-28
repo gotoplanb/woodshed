@@ -193,7 +193,13 @@ final class StorageService {
     private func seedIfEmpty() {
         for name in ["appetite-for-destruction", "playback-test"] {
             let destURL = setlistsURL.appendingPathComponent("\(name).json")
-            guard !FileManager.default.fileExists(atPath: destURL.path) else { continue }
+
+            // Skip if file exists AND decodes successfully with current model
+            if FileManager.default.fileExists(atPath: destURL.path),
+               let data = coordinatedRead(from: destURL),
+               (try? JSONDecoder.woodshed.decode(Setlist.self, from: data)) != nil {
+                continue
+            }
 
             if let seedURL = Bundle.main.url(forResource: name, withExtension: "json"),
                let data = try? Data(contentsOf: seedURL) {
