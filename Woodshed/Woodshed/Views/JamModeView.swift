@@ -15,30 +15,35 @@ struct JamModeView: View {
         VStack(spacing: 0) {
             Spacer()
 
-            // Current song info
-            if let song = coordinator.currentSong {
+            if let song = coordinator.currentJamSong {
                 Text(song.title)
                     .font(.largeTitle)
                     .multilineTextAlignment(.center)
+                    .padding(.horizontal)
 
-                Text("\(coordinator.currentSongIndex + 1) of \(coordinator.songs.count)")
-                    .font(.caption)
+                Text(song.instrument)
+                    .font(.subheadline)
                     .foregroundStyle(.secondary)
                     .padding(.top, 4)
 
+                Text("\(coordinator.currentSongIndex + 1) of \(coordinator.songs.count)")
+                    .font(.caption)
+                    .foregroundStyle(.tertiary)
+                    .padding(.top, 2)
+
                 Spacer()
 
-                // Progress
                 Text(Section.formatTime(coordinator.currentPlaybackTime))
                     .font(.system(.title, design: .monospaced))
                     .foregroundStyle(.secondary)
 
-                ProgressView(value: coordinator.songProgress)
-                    .padding(.horizontal, 40)
-                    .padding(.top, 8)
+                if coordinator.isPlaying {
+                    Text("Playing")
+                        .font(.caption)
+                        .foregroundStyle(.green)
+                }
             } else {
-                Text("Loading...")
-                    .foregroundStyle(.secondary)
+                ProgressView("Loading...")
                 Spacer()
             }
 
@@ -62,6 +67,13 @@ struct JamModeView: View {
                 }
             }
             .padding(.bottom, 40)
+
+            if let error = coordinator.playbackError {
+                Text(error)
+                    .font(.caption)
+                    .foregroundStyle(.red)
+                    .padding()
+            }
         }
         .navigationBarBackButtonHidden(true)
         .toolbar {
