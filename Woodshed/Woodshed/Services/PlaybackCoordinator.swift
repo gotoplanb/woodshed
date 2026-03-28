@@ -36,6 +36,7 @@ final class PlaybackCoordinator {
     var mode: PlaybackMode = .jam
     private let musicService: MusicKitService
     private var monitorTimer: Timer?
+    private var isLoopSeeking = false
 
     // MARK: - Computed Properties
 
@@ -240,21 +241,28 @@ final class PlaybackCoordinator {
     private func checkSectionBoundary() async {
         guard isPlaying, let song = currentSong else { return }
 
-        // Update current section index based on playback position
-        if let newIndex = song.sections.lastIndex(where: { currentPlaybackTime >= $0.startTime }) {
-            if newIndex != currentSectionIndex {
-                currentSectionIndex = newIndex
+        // Check loop boundary BEFORE updating section index
+        if let section = currentSection, let endTime = section.endTime,
+           currentPlaybackTime >= endTime, isLooping, !isLoopSeeking {
+            isLoopSeeking = true
+            // Pause briefly, then restart from section start
+            let player = ApplicationMusicPlayer.shared
+            player.pause()
+            Task {
+                try? await Task.sleep(for: .milliseconds(200))
+                player.playbackTime = section.startTime
+                try? await player.play()
+                await MainActor.run {
+                    self.isLoopSeeking = false
+                }
             }
+            return
         }
 
-        // Check if we've reached the end of the current section
-        guard let section = currentSection, let endTime = section.endTime else { return }
-        guard currentPlaybackTime >= endTime else { return }
-
-        if isLooping {
-            musicService.seek(to: section.startTime)
+        // Update current section index based on playback position
+        if let newIndex = song.sections.lastIndex(where: { currentPlaybackTime >= $0.startTime }),
+           newIndex != currentSectionIndex {
+            currentSectionIndex = newIndex
         }
-        // If not looping, just let the song keep playing — it'll naturally advance
-        // to the next section based on the timestamp check above
     }
 }

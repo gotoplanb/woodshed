@@ -99,6 +99,45 @@ final class PlaybackFlowTests: XCTestCase {
         XCTAssertTrue(intro.waitForExistence(timeout: 3), "Should see Intro section")
     }
 
+    func testLoopInPracticeMode() throws {
+        let setlistCell = app.staticTexts["Playback Test"]
+        guard setlistCell.waitForExistence(timeout: 5) else { return }
+        setlistCell.tap()
+        sleep(1)
+
+        let brownstone = app.staticTexts["Mr. Brownstone"]
+        guard brownstone.waitForExistence(timeout: 3) else { return }
+        brownstone.tap()
+        sleep(3)
+
+        // Tap loop button — try multiple label patterns
+        var tappedLoop = false
+        for label in ["repeat", "Repeat", "repeat.1", "Repeat 1"] {
+            let btn = app.buttons[label]
+            if btn.waitForExistence(timeout: 1) {
+                btn.tap()
+                print("TEST: Tapped loop button with label '\(label)'")
+                tappedLoop = true
+                break
+            }
+        }
+        if !tappedLoop {
+            // Dump all buttons for debugging
+            for btn in app.buttons.allElementsBoundByIndex.prefix(15) {
+                print("TEST-BTN: '\(btn.label)' id='\(btn.identifier)'")
+            }
+            XCTFail("Could not find loop button")
+            return
+        }
+
+        // Wait past the Intro endTime (18s) — at 25s we should still be on Intro if looping
+        sleep(20)
+        printState("Loop-23s")
+
+        sleep(5)
+        printState("Loop-28s")
+    }
+
     private func printState(_ label: String) {
         var texts: [String] = []
         for text in app.staticTexts.allElementsBoundByIndex.prefix(15) {

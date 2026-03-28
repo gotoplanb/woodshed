@@ -106,6 +106,7 @@ struct SongDetailView: View {
                     .font(.caption)
                     .foregroundStyle(.red)
             }
+
         }
         .padding()
     }
