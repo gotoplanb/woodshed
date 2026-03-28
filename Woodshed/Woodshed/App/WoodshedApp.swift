@@ -6,6 +6,7 @@ struct WoodshedApp: App {
     @State private var storageService = StorageService()
     @State private var musicService = MusicKitService()
     @State private var playbackCoordinator: PlaybackCoordinator
+    @State private var showingAbout = !AboutView.hasSeenAbout
 
     init() {
         let music = MusicKitService()
@@ -22,6 +23,11 @@ struct WoodshedApp: App {
                 .task {
                     await musicService.requestAuthorization()
                     MPMediaLibrary.requestAuthorization { _ in }
+                }
+                .sheet(isPresented: $showingAbout) {
+                    AboutView.hasSeenAbout = true
+                } content: {
+                    AboutView()
                 }
         }
     }
