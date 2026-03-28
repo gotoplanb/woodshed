@@ -2,6 +2,7 @@ import SwiftUI
 
 struct SettingsView: View {
     @Environment(StorageService.self) private var storage
+    @State private var showingAbout = false
 
     var body: some View {
         @Bindable var storage = storage
@@ -24,10 +25,19 @@ struct SettingsView: View {
                     }
                 }
             }
+
+            SwiftUI.Section {
+                Button("About Hermit Jam") {
+                    showingAbout = true
+                }
+            }
         }
         .navigationTitle("Settings")
         .onChange(of: storage.settings.defaultInstrument) { _, _ in storage.saveSettings() }
         .onChange(of: storage.settings.countdownSeconds) { _, _ in storage.saveSettings() }
         .onChange(of: storage.settings.tabDisplayMode) { _, _ in storage.saveSettings() }
+        .sheet(isPresented: $showingAbout) {
+            AboutView()
+        }
     }
 }
