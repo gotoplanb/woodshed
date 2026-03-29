@@ -3,6 +3,7 @@ import SwiftUI
 struct SongDetailView: View {
     @Environment(StorageService.self) private var storage
     @Environment(PlaybackCoordinator.self) private var coordinator
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     let setlistID: UUID
     let songID: UUID
 
@@ -10,10 +11,21 @@ struct SongDetailView: View {
         storage.setlists.first { $0.id == setlistID }?.songs.first { $0.id == songID }
     }
 
+    /// Tab image filename for the current section, if any
+    private var currentTabImage: String? {
+        coordinator.currentSection?.tabImageFilename
+    }
+
     var body: some View {
         Group {
             if let song {
-                content(song)
+                if horizontalSizeClass == .regular, currentTabImage != nil {
+                    // iPad landscape with tab image: side-by-side
+                    wideContent(song)
+                } else {
+                    // iPhone, iPad portrait, or no tab image: compact
+                    compactContent(song)
+                }
             } else {
                 ContentUnavailableView("Song Not Found", systemImage: "exclamationmark.triangle")
             }
@@ -25,16 +37,45 @@ struct SongDetailView: View {
         }
     }
 
-    private func content(_ song: SongEntry) -> some View {
-        VStack(spacing: 0) {
-            // Playback controls
-            playbackControls(song)
+    // MARK: - Wide Layout (iPad landscape with tabs)
+
+    private func wideContent(_ song: SongEntry) -> some View {
+        HStack(spacing: 0) {
+            // Left: playback controls + section list
+            VStack(spacing: 0) {
+                playbackControls(song)
+                Divider()
+                if song.sections.isEmpty {
+                    ContentUnavailableView("No Sections", systemImage: "music.note")
+                } else {
+                    sectionList(song)
+                }
+            }
+            .frame(maxWidth: .infinity)
 
             Divider()
 
-            // Section list
+            // Right: tab image
+            if let tabFilename = currentTabImage {
+                TabImageView(filename: tabFilename)
+                    .frame(maxWidth: .infinity)
+            }
+        }
+        .navigationTitle(song.title)
+        .task {
+            guard !coordinator.isSessionActive else { return }
+            await coordinator.startPracticeSession(song: song)
+        }
+    }
+
+    // MARK: - Compact Layout (iPhone / iPad portrait / no tabs)
+
+    private func compactContent(_ song: SongEntry) -> some View {
+        VStack(spacing: 0) {
+            playbackControls(song)
+            Divider()
             if song.sections.isEmpty {
-                ContentUnavailableView("No Sections", systemImage: "music.note", description: Text("Tap + to add sections for practice mode."))
+                ContentUnavailableView("No Sections", systemImage: "music.note", description: Text("Edit the setlist JSON to add sections."))
             } else {
                 sectionList(song)
             }
@@ -46,24 +87,22 @@ struct SongDetailView: View {
         }
     }
 
+    // MARK: - Playback Controls
+
     private func playbackControls(_ song: SongEntry) -> some View {
         VStack(spacing: 12) {
-            // Position display
             Text(Section.formatTime(coordinator.currentPlaybackTime))
                 .font(.system(.title2, design: .monospaced))
 
-            // Progress bar
             ProgressView(value: coordinator.songProgress)
                 .padding(.horizontal)
 
-            // Transport
             HStack(spacing: 40) {
                 Button { Task { await coordinator.togglePlayPause() } } label: {
                     Image(systemName: coordinator.isPlaying ? "pause.fill" : "play.fill")
                         .font(.largeTitle)
                 }
 
-                // Loop toggle
                 Button {
                     coordinator.toggleLoop()
                 } label: {
@@ -73,7 +112,6 @@ struct SongDetailView: View {
                 }
             }
 
-            // Speed control
             HStack {
                 Picker("Speed", selection: Binding(
                     get: { coordinator.playbackRate },
@@ -99,10 +137,11 @@ struct SongDetailView: View {
                     .font(.caption)
                     .foregroundStyle(.red)
             }
-
         }
         .padding()
     }
+
+    // MARK: - Section List
 
     private func sectionList(_ song: SongEntry) -> some View {
         List {
