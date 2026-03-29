@@ -1,12 +1,16 @@
 import AVFoundation
 import Foundation
-import MediaPlayer
 import MusicKit
 import Observation
 
 enum PlaybackMode {
     case jam       // Whole songs, no section awareness
     case practice  // Section-aware with loop and timestamps
+}
+
+enum ActiveEngine {
+    case musicKit
+    case avPlayer(AVAudioPlayer)
 }
 
 @Observable
@@ -37,29 +41,22 @@ final class PlaybackCoordinator {
     private let musicService: MusicKitService
     private var monitorTimer: Timer?
     private var isLoopSeeking = false
+    private var activeEngine: ActiveEngine = .musicKit
 
     // MARK: - Computed Properties
 
-    /// Current song in Jam Mode
     var currentJamSong: SongEntry? {
         guard mode == .jam, songs.indices.contains(currentSongIndex) else { return nil }
         return songs[currentSongIndex]
     }
 
-    /// Current section in Practice Mode
     var currentSection: Section? {
         guard mode == .practice, let song = currentSong else { return nil }
         guard song.sections.indices.contains(currentSectionIndex) else { return nil }
         return song.sections[currentSectionIndex]
     }
 
-    /// Progress through the current song (0-1), used in both modes
-    var songProgress: Double {
-        // MusicKit doesn't give us duration easily, so just show time
-        // For a rough progress, use playbackTime / estimated duration
-        // This is approximate — we could get duration from the Song metadata
-        0
-    }
+    var songProgress: Double { 0 }
 
     init(musicService: MusicKitService) {
         self.musicService = musicService
@@ -78,23 +75,8 @@ final class PlaybackCoordinator {
 
     private func playCurrentSongForJam() async {
         guard let song = currentJamSong else { return }
-
         configureAudioSession()
-
-        let found = await musicService.lookupSong(byID: song.appleMusicID, title: song.title)
-        guard let found else {
-            playbackError = "Song not found in Apple Music"
-            return
-        }
-
-        await musicService.play(song: found, startTime: 0)
-        if let error = musicService.lastError {
-            playbackError = error
-        } else {
-            isPlaying = true
-            playbackError = nil
-            startMonitoring()
-        }
+        await playSong(song, startTime: 0)
     }
 
     func nextSong() async {
@@ -123,19 +105,48 @@ final class PlaybackCoordinator {
         self.isSessionActive = true
         self.isLooping = false
         self.playbackRate = 1.0
-
         configureAudioSession()
+        await playSong(song, startTime: 0)
+    }
 
+    func seekToSection(_ index: Int) {
+        guard mode == .practice, let song = currentSong else { return }
+        guard song.sections.indices.contains(index) else { return }
+        currentSectionIndex = index
+        let section = song.sections[index]
+        seek(to: section.startTime)
+    }
+
+    // MARK: - Unified Playback
+
+    private func playSong(_ song: SongEntry, startTime: TimeInterval) async {
+        stopCurrentEngine()
+
+        // Try local playback first (for speed control)
+        if let player = findLocalTrack(appleMusicID: song.appleMusicID) {
+            activeEngine = .avPlayer(player)
+            rateControlAvailable = true
+            player.enableRate = true
+            player.rate = playbackRate
+            player.currentTime = startTime
+            player.play()
+            isPlaying = true
+            playbackError = nil
+            startMonitoring()
+            return
+        }
+
+        // Fall back to MusicKit streaming
         let found = await musicService.lookupSong(byID: song.appleMusicID, title: song.title)
         guard let found else {
             playbackError = "Song not found in Apple Music"
             return
         }
 
-        // TODO: detect local vs streaming for rate control
+        activeEngine = .musicKit
         rateControlAvailable = false
 
-        await musicService.play(song: found, startTime: 0)
+        await musicService.play(song: found, startTime: startTime)
         if let error = musicService.lastError {
             playbackError = error
         } else {
@@ -145,32 +156,32 @@ final class PlaybackCoordinator {
         }
     }
 
-    func seekToSection(_ index: Int) {
-        guard mode == .practice, let song = currentSong else { return }
-        guard song.sections.indices.contains(index) else { return }
-        currentSectionIndex = index
-        let section = song.sections[index]
-        musicService.seek(to: section.startTime)
-    }
-
     // MARK: - Shared Controls
 
     func pause() {
-        musicService.pause()
+        switch activeEngine {
+        case .avPlayer(let player):
+            player.pause()
+        case .musicKit:
+            musicService.pause()
+        }
         isPlaying = false
     }
 
     func resume() async {
-        await musicService.resume()
-        isPlaying = true
+        switch activeEngine {
+        case .avPlayer(let player):
+            player.rate = playbackRate
+            player.play()
+            isPlaying = true
+        case .musicKit:
+            await musicService.resume()
+            isPlaying = true
+        }
     }
 
     func togglePlayPause() async {
-        if isPlaying {
-            pause()
-        } else {
-            await resume()
-        }
+        if isPlaying { pause() } else { await resume() }
     }
 
     func toggleLoop() {
@@ -179,11 +190,13 @@ final class PlaybackCoordinator {
 
     func setRate(_ rate: Float) {
         playbackRate = rate
-        // TODO: apply to AVAudioPlayer when local playback is enabled
+        if case .avPlayer(let player) = activeEngine, player.isPlaying {
+            player.rate = rate
+        }
     }
 
     func endSession() {
-        musicService.stop()
+        stopCurrentEngine()
         isPlaying = false
         isSessionActive = false
         isCountingDown = false
@@ -193,7 +206,52 @@ final class PlaybackCoordinator {
         currentSongIndex = 0
         currentSectionIndex = 0
         playbackError = nil
+        rateControlAvailable = false
+        activeEngine = .musicKit
         stopMonitoring()
+    }
+
+    private func stopCurrentEngine() {
+        switch activeEngine {
+        case .avPlayer(let player):
+            player.stop()
+        case .musicKit:
+            musicService.stop()
+        }
+    }
+
+    private func seek(to time: TimeInterval) {
+        switch activeEngine {
+        case .avPlayer(let player):
+            player.currentTime = time
+        case .musicKit:
+            // Pause + set time + play for MusicKit (direct seek unreliable on streaming)
+            let shared = ApplicationMusicPlayer.shared
+            shared.pause()
+            Task {
+                try? await Task.sleep(for: .milliseconds(100))
+                shared.playbackTime = time
+                try? await shared.play()
+            }
+        }
+    }
+
+    // MARK: - Local Track Detection
+    //
+    // MPMediaLibrary/MPMediaQuery crash on iOS 26 beta, so local track detection
+    // via the MediaPlayer framework is disabled. Speed control requires AVFoundation
+    // with a local file URL, which only MPMediaQuery can provide.
+    //
+    // When Apple fixes MPMediaLibrary in a future iOS 26 release, re-enable by:
+    // 1. import MediaPlayer
+    // 2. Use MPMediaPropertyPredicate with MPMediaItemPropertyPlaybackStoreID
+    // 3. Get item.assetURL and create AVAudioPlayer
+    //
+    // For now, all playback goes through MusicKit (streaming, no speed control).
+
+    private func findLocalTrack(appleMusicID: String) -> AVAudioPlayer? {
+        // Disabled: MPMediaLibrary crashes on iOS 26.4 beta
+        return nil
     }
 
     // MARK: - Audio Session
@@ -215,10 +273,19 @@ final class PlaybackCoordinator {
             self?.monitorTimer = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: true) { [weak self] _ in
                 guard let self else { return }
                 Task { @MainActor in
-                    self.currentPlaybackTime = ApplicationMusicPlayer.shared.playbackTime
+                    self.updatePlaybackTime()
                     await self.checkBoundaries()
                 }
             }
+        }
+    }
+
+    private func updatePlaybackTime() {
+        switch activeEngine {
+        case .avPlayer(let player):
+            currentPlaybackTime = player.currentTime
+        case .musicKit:
+            currentPlaybackTime = ApplicationMusicPlayer.shared.playbackTime
         }
     }
 
@@ -229,12 +296,8 @@ final class PlaybackCoordinator {
 
     private func checkBoundaries() async {
         switch mode {
-        case .jam:
-            // In Jam Mode, we don't check boundaries — MusicKit handles end-of-song
-            // The player state will change when the song ends naturally
-            break
-        case .practice:
-            await checkSectionBoundary()
+        case .jam: break
+        case .practice: await checkSectionBoundary()
         }
     }
 
@@ -245,15 +308,18 @@ final class PlaybackCoordinator {
         if let section = currentSection, let endTime = section.endTime,
            currentPlaybackTime >= endTime, isLooping, !isLoopSeeking {
             isLoopSeeking = true
-            // Pause briefly, then restart from section start
-            let player = ApplicationMusicPlayer.shared
-            player.pause()
-            Task {
-                try? await Task.sleep(for: .milliseconds(200))
-                player.playbackTime = section.startTime
-                try? await player.play()
-                await MainActor.run {
-                    self.isLoopSeeking = false
+            switch activeEngine {
+            case .avPlayer(let player):
+                player.currentTime = section.startTime
+                isLoopSeeking = false
+            case .musicKit:
+                let player = ApplicationMusicPlayer.shared
+                player.pause()
+                Task {
+                    try? await Task.sleep(for: .milliseconds(200))
+                    player.playbackTime = section.startTime
+                    try? await player.play()
+                    await MainActor.run { self.isLoopSeeking = false }
                 }
             }
             return

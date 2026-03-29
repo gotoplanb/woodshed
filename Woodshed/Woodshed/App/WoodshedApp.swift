@@ -1,4 +1,3 @@
-import MediaPlayer
 import SwiftUI
 
 @main
@@ -22,7 +21,6 @@ struct WoodshedApp: App {
                 .environment(playbackCoordinator)
                 .task {
                     await musicService.requestAuthorization()
-                    MPMediaLibrary.requestAuthorization { _ in }
                 }
                 .sheet(isPresented: $showingAbout) {
                     AboutView.hasSeenAbout = true
