@@ -296,8 +296,22 @@ final class PlaybackCoordinator {
 
     private func checkBoundaries() async {
         switch mode {
-        case .jam: break
+        case .jam: await checkJamSongEnd()
         case .practice: await checkSectionBoundary()
+        }
+    }
+
+    private func checkJamSongEnd() async {
+        guard isPlaying else { return }
+        let status = ApplicationMusicPlayer.shared.state.playbackStatus
+        // If the player is no longer playing, the song ended
+        if status == .paused || status == .stopped || status == .interrupted {
+            // Small delay to avoid false triggers during seeks
+            try? await Task.sleep(for: .milliseconds(500))
+            let recheckStatus = ApplicationMusicPlayer.shared.state.playbackStatus
+            if recheckStatus == .paused || recheckStatus == .stopped || recheckStatus == .interrupted {
+                await nextSong()
+            }
         }
     }
 
