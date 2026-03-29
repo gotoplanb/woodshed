@@ -37,13 +37,6 @@ struct JamModeView: View {
                     .font(.system(.title, design: .monospaced))
                     .foregroundStyle(.secondary)
 
-                // Scrubber
-                Slider(value: Binding(
-                    get: { coordinator.currentPlaybackTime },
-                    set: { coordinator.seek(to: $0) }
-                ), in: 0...max(coordinator.currentPlaybackTime + 60, 300))
-                .padding(.horizontal, 40)
-                .padding(.top, 8)
             } else {
                 ProgressView("Loading...")
                 Spacer()
