@@ -41,6 +41,7 @@ final class PlaybackCoordinator {
     private let musicService: MusicKitService
     private var monitorTimer: Timer?
     private var isLoopSeeking = false
+    private var isAdvancingSong = false
     private var activeEngine: ActiveEngine = .musicKit
 
     // MARK: - Computed Properties
@@ -220,7 +221,7 @@ final class PlaybackCoordinator {
         }
     }
 
-    private func seek(to time: TimeInterval) {
+    func seek(to time: TimeInterval) {
         switch activeEngine {
         case .avPlayer(let player):
             player.currentTime = time
@@ -302,16 +303,19 @@ final class PlaybackCoordinator {
     }
 
     private func checkJamSongEnd() async {
-        guard isPlaying else { return }
+        guard isPlaying, !isAdvancingSong else { return }
         let status = ApplicationMusicPlayer.shared.state.playbackStatus
-        // If the player is no longer playing, the song ended
         if status == .paused || status == .stopped || status == .interrupted {
-            // Small delay to avoid false triggers during seeks
-            try? await Task.sleep(for: .milliseconds(500))
+            isAdvancingSong = true
+            // Wait for player to settle, then recheck
+            try? await Task.sleep(for: .seconds(1))
             let recheckStatus = ApplicationMusicPlayer.shared.state.playbackStatus
             if recheckStatus == .paused || recheckStatus == .stopped || recheckStatus == .interrupted {
                 await nextSong()
             }
+            // Give the new song time to start before allowing another check
+            try? await Task.sleep(for: .seconds(2))
+            isAdvancingSong = false
         }
     }
 
