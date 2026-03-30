@@ -138,7 +138,7 @@ final class PlaybackCoordinator {
         }
 
         // Fall back to MusicKit streaming
-        let found = await musicService.lookupSong(byID: song.appleMusicID, title: song.title)
+        let found = await musicService.lookupSong(byID: song.appleMusicID, title: song.title, artist: song.artist)
         guard let found else {
             playbackError = "Song not found in Apple Music"
             return

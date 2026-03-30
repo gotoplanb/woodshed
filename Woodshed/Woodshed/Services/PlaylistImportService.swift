@@ -34,9 +34,9 @@ final class PlaylistImportService {
 
             var songs: [SongEntry] = []
             for track in tracks {
-                // Each track becomes a SongEntry with placeholder sections
                 let song = SongEntry(
                     title: track.title,
+                    artist: track.artistName,
                     appleMusicID: track.id.rawValue,
                     instrument: "Guitar",
                     sections: defaultSections()

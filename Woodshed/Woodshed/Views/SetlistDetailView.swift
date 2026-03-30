@@ -65,10 +65,13 @@ struct SetlistDetailView: View {
     private func songRow(_ song: SongEntry) -> some View {
         VStack(alignment: .leading, spacing: 4) {
             Text(song.title)
-            HStack {
-                Text(song.instrument)
+            if !song.artist.isEmpty {
+                Text(song.artist)
+                    .font(.caption)
                     .foregroundStyle(.secondary)
-                Text("· \(song.tuning)")
+            }
+            HStack {
+                Text(song.tuning)
                     .foregroundStyle(.secondary)
                 Spacer()
                 if song.sections.isEmpty {
