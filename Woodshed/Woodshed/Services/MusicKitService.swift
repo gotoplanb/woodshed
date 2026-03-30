@@ -59,20 +59,28 @@ final class MusicKitService {
     }
 
     func lookupSong(byID id: String, title: String? = nil, artist: String? = nil) async -> Song? {
-        // Try direct ID lookup first
-        let musicItemID = MusicItemID(id)
-        let request = MusicCatalogResourceRequest<Song>(matching: \.id, equalTo: musicItemID)
-        if let song = try? await request.response().items.first {
-            return song
+        // Library IDs (starting with "i.") don't reliably resolve to the correct
+        // catalog entry — skip straight to title+artist search for these
+        if !id.hasPrefix("i.") {
+            let musicItemID = MusicItemID(id)
+            let request = MusicCatalogResourceRequest<Song>(matching: \.id, equalTo: musicItemID)
+            if let song = try? await request.response().items.first {
+                return song
+            }
         }
 
-        // Fall back to search by title + artist for disambiguation
+        // Search by title + artist for disambiguation
         guard let title else { return nil }
-        let searchTerm = if let artist, !artist.isEmpty { "\(title) \(artist)" } else { title }
+        let searchTerm: String
+        if let artist, !artist.isEmpty {
+            searchTerm = "\(title) \(artist)"
+        } else {
+            searchTerm = title
+        }
         var searchRequest = MusicCatalogSearchRequest(term: searchTerm, types: [Song.self])
-        searchRequest.limit = 5
+        searchRequest.limit = 10
         if let results = try? await searchRequest.response() {
-            // Prefer exact artist match if we have one
+            // Prefer exact artist match
             if let artist, !artist.isEmpty {
                 if let match = results.songs.first(where: { $0.artistName.localizedCaseInsensitiveContains(artist) }) {
                     return match
