@@ -68,6 +68,8 @@ struct SetlistDetailView: View {
             HStack {
                 Text(song.instrument)
                     .foregroundStyle(.secondary)
+                Text("· \(song.tuning)")
+                    .foregroundStyle(.secondary)
                 Spacer()
                 if song.sections.isEmpty {
                     Text("No sections")

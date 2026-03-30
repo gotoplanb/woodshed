@@ -21,7 +21,7 @@ struct JamModeView: View {
                     .multilineTextAlignment(.center)
                     .padding(.horizontal)
 
-                Text(song.instrument)
+                Text("\(song.instrument) · \(song.tuning)")
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
                     .padding(.top, 4)
