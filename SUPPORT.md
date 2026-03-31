@@ -11,7 +11,7 @@ Open an issue on GitHub:
 
 ### Contact the Developer
 
-Email: **davestanton.us@gmail.com**
+Email: **dave@zeromissionllc.com**
 
 We typically respond within 48 hours.
 
