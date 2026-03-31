@@ -6,6 +6,7 @@ struct SongDetailView: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     let setlistID: UUID
     let songID: UUID
+    @State private var showingTab = false
 
     private var song: SongEntry? {
         storage.setlists.first { $0.id == setlistID }?.songs.first { $0.id == songID }
@@ -81,6 +82,31 @@ struct SongDetailView: View {
             }
         }
         .navigationTitle(song.title)
+        .toolbar {
+            if currentTabImage != nil {
+                ToolbarItem(placement: .primaryAction) {
+                    Button {
+                        showingTab.toggle()
+                    } label: {
+                        Image(systemName: "doc.richtext")
+                    }
+                }
+            }
+        }
+        .sheet(isPresented: $showingTab) {
+            if let tabFilename = currentTabImage {
+                NavigationStack {
+                    TabImageView(filename: tabFilename)
+                        .navigationTitle(coordinator.currentSection?.title ?? "Tab")
+                        .navigationBarTitleDisplayMode(.inline)
+                        .toolbar {
+                            ToolbarItem(placement: .confirmationAction) {
+                                Button("Done") { showingTab = false }
+                            }
+                        }
+                }
+            }
+        }
         .task {
             guard !coordinator.isSessionActive else { return }
             await coordinator.startPracticeSession(song: song)
